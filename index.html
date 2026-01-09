@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Flashcards（ランダム）</title>
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="./manifest.json" />
+  <style>
+    :root{
+      --bg:#111; --panel:#1b1b1b; --border:#2a2a2a; --text:#eee; --muted:#aaa;
+      --btn:#262626; --btn2:#2f2f2f;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif}
+    .wrap{max-width:920px;margin:0 auto;padding:16px 16px 28px}
+    h1{font-size:20px;margin:6px 0 10px}
+    .grid{display:grid;gap:12px}
+    .top{display:grid;gap:10px}
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:14px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    button{
+      appearance:none;border:1px solid #3a3a3a;background:var(--btn);
+      color:var(--text);border-radius:12px;padding:10px 12px;cursor:pointer;
+      font-weight:600;
+    }
+    button:hover{background:var(--btn2)}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    input[type="file"]{color:var(--text)}
+    .muted{color:var(--muted);font-size:12px;line-height:1.45}
+    .kpis{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{border:1px solid #2f2f2f;background:#171717;border-radius:999px;padding:6px 10px;font-size:12px;color:#ddd}
+    .card{min-height:220px}
+    .label{color:var(--muted);font-size:12px}
+    .big{font-size:20px;line-height:1.4;white-space:pre-wrap}
+    .sep{height:1px;background:var(--border);margin:12px 0}
+    .two{display:grid;gap:10px}
+    @media (min-width:760px){ .top{grid-template-columns:1.2fr .8fr} }
+    code{background:#151515;border:1px solid #2a2a2a;border-radius:8px;padding:1px 6px}
+    a{color:#9ad}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Flashcards（ランダム）</h1>
+
+    <div class="top">
+      <div class="panel">
+        <div class="row">
+          <input id="file" type="file" accept=".csv,text/csv" />
+          <button id="btnImport">CSVインポート</button>
+          <button id="btnExport">デッキを書き出し</button>
+          <button id="btnReset" title="この端末内のデータを消去">初期化</button>
+        </div>
+        <div class="muted" style="margin-top:8px">
+          標準CSV形式：<code>front,back</code>（ヘッダあり・2列）。ヘッダ無しでも2列なら取り込み可。<br/>
+          学習履歴は各端末内に保存されます（サーバー不要）。
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="kpis">
+          <div class="pill">カード：<span id="kCards">0</span></div>
+          <div class="pill">今日：<span id="kToday">0</span>枚</div>
+          <div class="pill">更新：<span id="kUpdated">-</span></div>
+        </div>
+        <div class="sep"></div>
+        <div class="row">
+          <button id="btnReveal">答えを見る</button>
+          <button id="btnNext">次へ（ランダム）</button>
+          <button id="btnShuffle">履歴リセット</button>
+        </div>
+        <div class="muted" style="margin-top:8px">
+          スマホ：ブラウザの共有/メニューから「ホーム画面に追加」→アプリ風に使えます（PWA）。
+        </div>
+      </div>
+    </div>
+
+    <div class="panel card" style="margin-top:12px">
+      <div class="label" id="pos">-</div>
+      <div class="sep"></div>
+      <div class="two">
+        <div>
+          <div class="label">問題（front）</div>
+          <div class="big" id="front">CSVをインポートしてください</div>
+        </div>
+        <div>
+          <div class="label">答え（back）</div>
+          <div class="big" id="back" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:12px">
+      <div class="row">
+        <button id="btnCopyQ">問題をコピー</button>
+        <button id="btnCopyA">答えをコピー</button>
+        <button id="btnBackup">学習データをバックアップ</button>
+        <input id="restoreFile" type="file" accept=".json,application/json" style="display:none" />
+        <button id="btnRestore">バックアップを復元</button>
+      </div>
+      <div class="muted" style="margin-top:8px">
+        端末変更や不意のリセット対策に、バックアップ（JSON）を推奨します。
+      </div>
+    </div>
+
+    <div class="muted" style="margin-top:12px">
+      先生用メモ：デッキ更新は「新CSVを配布 → 生徒がインポート」で完結します（各自の学習ログは端末内に残ります）。
+    </div>
+  </div>
+
+<script>
+(() => {
+  // --- PWA
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  }
+
+  // --- Storage keys
+  const KEY_DECK = "fc_deck_v2";
+  const KEY_STATE = "fc_state_v2";
+  const KEY_UPDATED = "fc_updated_v2";
+
+  // --- CSV parsing (quoted fields, commas)
+  function parseCSV(text){
+    const rows = [];
+    let i=0, field="", row=[], inQuotes=false;
+    while(i<text.length){
+      const c=text[i];
+      if(inQuotes){
+        if(c === '"'){
+          if(text[i+1] === '"'){ field += '"'; i += 2; continue; }
+          inQuotes=false; i++; continue;
+        }
+        field += c; i++; continue;
+      }else{
+        if(c === '"'){ inQuotes=true; i++; continue; }
+        if(c === ','){ row.push(field); field=""; i++; continue; }
+        if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=""; i++; continue; }
+        if(c === '\r'){ i++; continue; }
+        field += c; i++; continue;
+      }
+    }
+    row.push(field);
+    if(row.length>1 || row[0].trim()!=="") rows.push(row);
+    return rows.filter(r => r.some(x => String(x).trim() !== ""));
+  }
+
+  function toCSV(rows){
+    const esc = (s) => {
+      s = String(s ?? "");
+      const need = /[",\n\r]/.test(s);
+      s = s.replace(/"/g,'""');
+      return need ? `"${s}"` : s;
+    };
+    return rows.map(r => r.map(esc).join(",")).join("\n");
+  }
+
+  function loadDeck(){
+    try { return JSON.parse(localStorage.getItem(KEY_DECK)) ?? []; } catch { return []; }
+  }
+  function saveDeck(deck){
+    localStorage.setItem(KEY_DECK, JSON.stringify(deck));
+    localStorage.setItem(KEY_UPDATED, new Date().toISOString());
+  }
+  function loadState(){
+    try {
+      return JSON.parse(localStorage.getItem(KEY_STATE)) ?? { seenToday:0, lastSeenDate:null, history:[] };
+    } catch {
+      return { seenToday:0, lastSeenDate:null, history:[] };
+    }
+  }
+  function saveState(st){ localStorage.setItem(KEY_STATE, JSON.stringify(st)); }
+
+  function todayKey(){
+    const d=new Date();
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    const da=String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${da}`;
+  }
+
+  const elFront = document.getElementById("front");
+  const elBack  = document.getElementById("back");
+  const elPos   = document.getElementById("pos");
+  const kCards  = document.getElementById("kCards");
+  const kToday  = document.getElementById("kToday");
+  const kUpdated= document.getElementById("kUpdated");
+
+  let deck = loadDeck();
+  let state = loadState();
+  let currentIndex = -1;
+
+  function ensureToday(){
+    const t=todayKey();
+    if(state.lastSeenDate !== t){
+      state.lastSeenDate = t;
+      state.seenToday = 0;
+      saveState(state);
+    }
+  }
+
+  function updateKPI(){
+    ensureToday();
+    kCards.textContent = String(deck.length);
+    kToday.textContent = String(state.seenToday);
+    const upd = localStorage.getItem(KEY_UPDATED);
+    kUpdated.textContent = upd ? new Date(upd).toLocaleString() : "-";
+  }
+
+  function showCard(i){
+    if(deck.length===0){
+      elPos.textContent = "-";
+      elFront.textContent = "CSVをインポートしてください";
+      elBack.textContent = "";
+      elBack.style.display="none";
+      return;
+    }
+    currentIndex=i;
+    const c=deck[i];
+    elPos.textContent = `#${i+1} / ${deck.length}`;
+    elFront.textContent = c.front ?? "";
+    elBack.textContent  = c.back ?? "";
+    elBack.style.display="none";
+  }
+
+  function nextRandom(){
+    if(deck.length===0) return;
+    const maxTry = Math.min(80, deck.length*2);
+    let pick=-1;
+    for(let t=0;t<maxTry;t++){
+      const cand = Math.floor(Math.random()*deck.length);
+      if(cand===currentIndex) continue;
+      if(deck.length>=10 && state.history.includes(cand)) continue;
+      pick=cand; break;
+    }
+    if(pick===-1){
+      state.history=[];
+      pick=Math.floor(Math.random()*deck.length);
+    }
+
+    state.history.push(pick);
+    const cap = Math.min(80, deck.length);
+    if(state.history.length>cap) state.history = state.history.slice(-cap);
+
+    ensureToday();
+    state.seenToday += 1;
+    saveState(state);
+
+    showCard(pick);
+    updateKPI();
+  }
+
+  function resetHistory(){
+    state.history=[];
+    saveState(state);
+  }
+
+  // Buttons
+  document.getElementById("btnReveal").onclick = () => {
+    if(deck.length===0) return;
+    elBack.style.display = (elBack.style.display==="none") ? "block" : "none";
+  };
+  document.getElementById("btnNext").onclick = () => nextRandom();
+  document.getElementById("btnShuffle").onclick = () => { resetHistory(); nextRandom(); };
+
+  document.getElementById("btnCopyQ").onclick = async () => {
+    if(deck.length===0) return;
+    try { await navigator.clipboard.writeText(elFront.textContent); } catch {}
+  };
+  document.getElementById("btnCopyA").onclick = async () => {
+    if(deck.length===0) return;
+    try { await navigator.clipboard.writeText(elBack.textContent || ""); } catch {}
+  };
+
+  // Import
+  document.getElementById("btnImport").onclick = async () => {
+    const f = document.getElementById("file").files?.[0];
+    if(!f){ alert("CSVファイルを選択してください"); return; }
+    const text = await f.text();
+    const rows = parseCSV(text);
+    if(rows.length < 1){ alert("CSVが空です"); return; }
+
+    // Determine header
+    const r0 = rows[0].map(x => String(x).trim().toLowerCase());
+    let start = 0;
+    let idxFront = 0, idxBack = 1;
+
+    if(r0.length>=2 && r0.includes("front") && r0.includes("back")){
+      idxFront = r0.indexOf("front");
+      idxBack  = r0.indexOf("back");
+      start = 1;
+    } else {
+      // headerless: assume 2 columns
+      if(rows[0].length !== 2){
+        alert("ヘッダ無しの場合は2列（問い・答え）である必要があります"); return;
+      }
+      start = 0;
+      idxFront = 0; idxBack = 1;
+    }
+
+    const newDeck=[];
+    for(let r=start;r<rows.length;r++){
+      const row = rows[r];
+      const front = (row[idxFront] ?? "").trim();
+      const back  = (row[idxBack] ?? "").trim();
+      if(!front && !back) continue;
+      newDeck.push({front, back});
+    }
+    if(newDeck.length===0){ alert("カードが0件でした"); return; }
+
+    deck = newDeck;
+    saveDeck(deck);
+
+    // keep today's counter but clear session history
+    state.history=[];
+    saveState(state);
+
+    updateKPI();
+    showCard(0);
+    alert(`インポート完了：${deck.length}枚`);
+  };
+
+  // Export deck
+  document.getElementById("btnExport").onclick = () => {
+    if(deck.length===0){ alert("デッキが空です"); return; }
+    const rows = [["front","back"], ...deck.map(c => [c.front ?? "", c.back ?? ""])];
+    const csvText = toCSV(rows);
+    const blob = new Blob([csvText], {type:"text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "deck.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Reset all
+  document.getElementById("btnReset").onclick = () => {
+    if(!confirm("この端末内のデッキと学習データを初期化します。よろしいですか？")) return;
+    localStorage.removeItem(KEY_DECK);
+    localStorage.removeItem(KEY_STATE);
+    localStorage.removeItem(KEY_UPDATED);
+    deck = [];
+    state = loadState();
+    currentIndex = -1;
+    updateKPI();
+    showCard(-1);
+  };
+
+  // Backup / restore (state + deck)
+  function downloadJSON(obj, filename){
+    const blob = new Blob([JSON.stringify(obj,null,2)], {type:"application/json;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  document.getElementById("btnBackup").onclick = () => {
+    const payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      deck,
+      state,
+      updated: localStorage.getItem(KEY_UPDATED)
+    };
+    downloadJSON(payload, "flashcards-backup.json");
+  };
+
+  const restoreInput = document.getElementById("restoreFile");
+  document.getElementById("btnRestore").onclick = () => restoreInput.click();
+  restoreInput.onchange = async () => {
+    const f = restoreInput.files?.[0];
+    if(!f) return;
+    try{
+      const obj = JSON.parse(await f.text());
+      if(!obj || !Array.isArray(obj.deck)) throw new Error("bad");
+      deck = obj.deck;
+      state = obj.state ?? { seenToday:0, lastSeenDate:null, history:[] };
+      saveDeck(deck);
+      saveState(state);
+      updateKPI();
+      showCard(deck.length ? 0 : -1);
+      alert("復元しました");
+    }catch(e){
+      alert("復元に失敗しました（ファイル形式をご確認ください）");
+    } finally {
+      restoreInput.value = "";
+    }
+  };
+
+  // init
+  updateKPI();
+  showCard(deck.length ? 0 : -1);
+})();
+</script>
+</body>
+</html>
