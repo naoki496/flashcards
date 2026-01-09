@@ -1,5 +1,5 @@
-const CACHE_NAME = "flashcards-pwa-v1";
-const ASSETS = [
+const CACHE_NAME = "flashcards-pwa-v3-e22fbbb517bd";
+const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
@@ -8,37 +8,68 @@ const ASSETS = [
   "./icon-512.png"
 ];
 
+// Assets that should update when online, but also work offline
+const DATA_ASSETS = [
+  "./deck_default.csv",
+  "./deck_meta.json"
+];
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(CORE_ASSETS.concat(DATA_ASSETS));
+  })());
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.map((k) => (k.startsWith("flashcards-pwa-") && k !== CACHE_NAME) ? caches.delete(k) : Promise.resolve()));
+    self.clients.claim();
+  })());
 });
+
+async function networkFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const res = await fetch(req);
+    cache.put(req, res.clone());
+    return res;
+  } catch (e) {
+    const cached = await cache.match(req);
+    return cached || Response.error();
+  }
+}
+
+async function cacheFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req);
+  if (cached) return cached;
+  const res = await fetch(req);
+  cache.put(req, res.clone());
+  return res;
+}
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
-  // Network-first for navigation, cache-first otherwise
+  const url = new URL(req.url);
+
+  // Only handle same-origin
+  if (url.origin !== self.location.origin) return;
+
+  // Navigation -> serve index.html (cache-first)
   if (req.mode === "navigate") {
-    event.respondWith(
-      fetch(req).then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put("./", copy));
-        return res;
-      }).catch(() => caches.match("./"))
-    );
+    event.respondWith(cacheFirst("./index.html"));
     return;
   }
 
-  event.respondWith(
-    caches.match(req).then((cached) => cached || fetch(req))
-  );
+  // Data assets -> network-first (keeps updated when online)
+  if (url.pathname.endsWith("/deck_default.csv") || url.pathname.endsWith("/deck_meta.json")) {
+    event.respondWith(networkFirst(req));
+    return;
+  }
+
+  // Everything else -> cache-first
+  event.respondWith(cacheFirst(req));
 });
