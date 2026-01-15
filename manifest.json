@@ -1,6 +1,6 @@
 {
-  "name": "Flashcards（ランダム）",
-  "short_name": "Flashcards",
+  "name": "八東古文単語",
+  "short_name": "八東古単",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#111111",
