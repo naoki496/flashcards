@@ -28,9 +28,9 @@
 </head>
 <body>
   <div class="wrap">
-    <h1 style="margin:6px 0 6px;">Flashcards（ランダム）</h1>
+    <h1 style="margin:6px 0 6px;">八東古文単語</h1>
     <div class="muted" style="margin-bottom:6px;">
-      生徒配布向け：<b>初回は自動でデッキを読み込みます</b>（CSVインポートは任意）。<br>
+      生徒向け：<b>初回は自動でデッキを読み込みます</b><br>
       データは端末内に保存されます。オフラインでも動作します（PWA）。
     </div>
 
@@ -64,7 +64,7 @@
     <div class="sep"></div>
 
     <details>
-      <summary>先生用：デッキ操作（任意）</summary>
+      <summary>メンテ用；生徒は操作しない</summary>
       <div class="row" style="margin-top:10px;">
         <input id="file" type="file" accept=".csv,text/csv" />
         <button id="btnImport">CSVインポート（任意）</button>
@@ -74,8 +74,7 @@
       </div>
       <div class="muted">
         CSV形式（推奨）：<code>front,back</code>（1行目ヘッダ）。<br>
-        ※ヘッダ無しでも「1列目=front、2列目=back」として読み取ります。<br>
-        ※生徒には通常この欄は触らせない運用が安定します。
+        
       </div>
     </details>
 
