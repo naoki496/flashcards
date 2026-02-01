@@ -6,25 +6,231 @@
   <title>Flashcards（ランダム）</title>
   <meta name="theme-color" content="#111111" />
   <link rel="manifest" href="manifest.json">
-  <style>
-    body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;margin:0;background:#111;color:#eee}
-    .wrap{max-width:860px;margin:0 auto;padding:16px}
-    .card{background:#1b1b1b;border:1px solid #2a2a2a;border-radius:14px;padding:18px;min-height:180px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
-    button{background:#2a2a2a;color:#eee;border:1px solid #3a3a3a;border-radius:10px;padding:10px 12px;cursor:pointer}
-    button:hover{background:#333}
-    input[type="file"]{color:#eee}
-    .muted{color:#aaa;font-size:12px;line-height:1.5}
-    .big{font-size:20px;line-height:1.35;white-space:pre-wrap}
-    .sep{height:1px;background:#2a2a2a;margin:14px 0}
-    .kpi{display:flex;gap:12px;flex-wrap:wrap}
-    .pill{background:#222;border:1px solid #2f2f2f;border-radius:999px;padding:6px 10px;font-size:12px;color:#ddd}
-    a{color:#9ad}
-    .status{font-size:12px;color:#cfc;}
-    .status.warn{color:#fc9;}
-    .status.err{color:#f99;}
-    code{background:#1a1a1a;border:1px solid #2a2a2a;padding:1px 6px;border-radius:8px}
-  </style>
+  :root{
+  --bg0:#070A10;
+  --bg1:#0B1220;
+  --panel:rgba(255,255,255,.06);
+  --panel2:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.12);
+  --line2:rgba(255,255,255,.18);
+  --text:#EAF0FF;
+  --muted:rgba(234,240,255,.72);
+  --accent:#66D9FF;     /* LOBBY系の青 */
+  --accent2:#8A5CFF;    /* 紫寄りの補色 */
+  --warn:#FFCC66;
+  --err:#FF6B7A;
+  --ok:#7CFFB2;
+  --r:16px;
+  --r2:14px;
+  --shadow: 0 16px 44px rgba(0,0,0,.55);
+  --shadow2: 0 10px 24px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+  background:
+    radial-gradient(900px 520px at 20% 12%, rgba(102,217,255,.22), transparent 55%),
+    radial-gradient(800px 520px at 82% 18%, rgba(138,92,255,.18), transparent 60%),
+    radial-gradient(900px 620px at 60% 85%, rgba(102,217,255,.10), transparent 58%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+  overflow-x:hidden;
+}
+
+a{color:rgba(102,217,255,.92)}
+a:hover{color:rgba(102,217,255,1)}
+
+.wrap{
+  max-width:860px;
+  margin:0 auto;
+  padding:16px;
+}
+
+/* ===== Header ===== */
+h1{
+  margin:6px 0 6px;
+  font-size:22px;
+  letter-spacing:.06em;
+  line-height:1.25;
+  text-shadow: 0 0 18px rgba(102,217,255,.18);
+}
+
+/* ===== Subtext ===== */
+.muted{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* ===== Layout rows ===== */
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0;
+  align-items:center;
+}
+
+/* ===== KPI pills ===== */
+.kpi{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.pill{
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:12px;
+  color:rgba(234,240,255,.86);
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===== Separators ===== */
+.sep{
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+  margin:14px 0;
+}
+
+/* ===== Main card (glass) ===== */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r);
+  padding:18px;
+  min-height:180px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position:relative;
+  overflow:hidden;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(500px 260px at 20% 10%, rgba(102,217,255,.16), transparent 60%),
+    radial-gradient(540px 320px at 85% 20%, rgba(138,92,255,.12), transparent 62%);
+  pointer-events:none;
+}
+
+.card > *{position:relative}
+
+/* ===== Text blocks ===== */
+.big{
+  font-size:20px;
+  line-height:1.45;
+  white-space:pre-wrap;
+}
+
+/* pos label */
+#pos{
+  color:rgba(234,240,255,.72);
+}
+
+/* ===== Buttons ===== */
+button{
+  appearance:none;
+  -webkit-appearance:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  color:rgba(234,240,255,.92);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;
+  padding:12px 14px;
+  cursor:pointer;
+  box-shadow: var(--shadow2);
+  transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+  min-height:44px;          /* スマホ最優先 */
+  touch-action:manipulation;
+}
+
+button:hover{
+  background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08));
+  border-color: rgba(102,217,255,.28);
+  box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(102,217,255,.10);
+}
+
+button:active{
+  transform: translateY(1px);
+}
+
+button:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(102,217,255,.22), var(--shadow2);
+}
+
+/* “操作系”ボタンを少し主役に */
+#btnNext{
+  border-color: rgba(102,217,255,.30);
+  box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(102,217,255,.12);
+}
+
+/* file input */
+input[type="file"]{
+  color:rgba(234,240,255,.86);
+  font-size:12px;
+}
+
+/* details */
+details{
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r2);
+  padding:10px 12px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+summary{
+  cursor:pointer;
+  color:rgba(234,240,255,.84);
+  list-style:none;
+}
+summary::-webkit-details-marker{display:none}
+summary::before{
+  content:"▸";
+  display:inline-block;
+  margin-right:8px;
+  transform: translateY(-1px);
+  color:rgba(102,217,255,.85);
+}
+details[open] summary::before{content:"▾"}
+
+/* status colors */
+.status{font-size:12px;color:var(--ok)}
+.status.warn{color:var(--warn)}
+.status.err{color:var(--err)}
+
+/* code chip */
+code{
+  background:rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.12);
+  padding:2px 8px;
+  border-radius:999px;
+  color:rgba(234,240,255,.88);
+}
+
+/* ===== Mobile polish ===== */
+@media (max-width:560px){
+  .wrap{padding:14px}
+  h1{font-size:20px}
+  .big{font-size:19px}
+  button{flex:1 1 calc(50% - 10px)}
+  /* 4ボタンが2列で収まりやすく */
+}
+
 </head>
 <body>
   <div class="wrap">
