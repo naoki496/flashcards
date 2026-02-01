@@ -17,8 +17,11 @@
       --line2:rgba(255,255,255,.18);
       --text:#EAF0FF;
       --muted:rgba(234,240,255,.72);
-      --accent:#66D9FF;     /* LOBBY系の青 */
-      --accent2:#8A5CFF;    /* 紫寄りの補色 */
+
+      /* ✅ Violet theme */
+      --accent:#B56CFF;     /* 主：バイオレット */
+      --accent2:#66D9FF;    /* 副：シアン（少量） */
+
       --warn:#FFCC66;
       --err:#FF6B7A;
       --ok:#7CFFB2;
@@ -36,15 +39,15 @@
       color:var(--text);
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
       background:
-        radial-gradient(900px 520px at 20% 12%, rgba(102,217,255,.22), transparent 55%),
-        radial-gradient(800px 520px at 82% 18%, rgba(138,92,255,.18), transparent 60%),
-        radial-gradient(900px 620px at 60% 85%, rgba(102,217,255,.10), transparent 58%),
+        radial-gradient(900px 520px at 20% 12%, rgba(181,108,255,.22), transparent 55%),
+        radial-gradient(800px 520px at 82% 18%, rgba(102,217,255,.14), transparent 60%),
+        radial-gradient(900px 620px at 60% 85%, rgba(181,108,255,.10), transparent 58%),
         linear-gradient(180deg, var(--bg1), var(--bg0));
       overflow-x:hidden;
     }
 
-    a{color:rgba(102,217,255,.92)}
-    a:hover{color:rgba(102,217,255,1)}
+    a{color:rgba(181,108,255,.92)}
+    a:hover{color:rgba(181,108,255,1)}
 
     .wrap{
       max-width:860px;
@@ -52,23 +55,20 @@
       padding:16px;
     }
 
-    /* ===== Header ===== */
     h1{
       margin:6px 0 6px;
       font-size:22px;
       letter-spacing:.06em;
       line-height:1.25;
-      text-shadow: 0 0 18px rgba(102,217,255,.18);
+      text-shadow: 0 0 18px rgba(181,108,255,.18);
     }
 
-    /* ===== Subtext ===== */
     .muted{
       color:var(--muted);
       font-size:12px;
       line-height:1.6;
     }
 
-    /* ===== Layout rows ===== */
     .row{
       display:flex;
       gap:10px;
@@ -77,7 +77,17 @@
       align-items:center;
     }
 
-    /* ===== KPI pills ===== */
+    /* ✅ UI整理：主操作／補助 */
+    .row.primary button{
+      flex:1 1 calc(50% - 10px);
+      font-size:16px;
+    }
+    .row.secondary button{
+      flex:1 1 calc(50% - 10px);
+      font-size:13px;
+      opacity:.80;
+    }
+
     .kpi{
       display:flex;
       gap:10px;
@@ -96,14 +106,12 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
-    /* ===== Separators ===== */
     .sep{
       height:1px;
       background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
       margin:14px 0;
     }
 
-    /* ===== Main card (glass) ===== */
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
       border:1px solid rgba(255,255,255,.14);
@@ -122,26 +130,23 @@
       position:absolute;
       inset:-2px;
       background:
-        radial-gradient(500px 260px at 20% 10%, rgba(102,217,255,.16), transparent 60%),
-        radial-gradient(540px 320px at 85% 20%, rgba(138,92,255,.12), transparent 62%);
+        radial-gradient(520px 280px at 18% 10%, rgba(181,108,255,.16), transparent 60%),
+        radial-gradient(560px 340px at 88% 20%, rgba(102,217,255,.10), transparent 62%);
       pointer-events:none;
     }
 
     .card > *{position:relative}
 
-    /* ===== Text blocks ===== */
     .big{
       font-size:20px;
       line-height:1.45;
       white-space:pre-wrap;
     }
 
-    /* pos label */
     #pos{
       color:rgba(234,240,255,.72);
     }
 
-    /* ===== Buttons ===== */
     button{
       appearance:none;
       -webkit-appearance:none;
@@ -153,38 +158,34 @@
       cursor:pointer;
       box-shadow: var(--shadow2);
       transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
-      min-height:44px;          /* スマホ最優先 */
+      min-height:44px;
       touch-action:manipulation;
     }
 
     button:hover{
       background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08));
-      border-color: rgba(102,217,255,.28);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(102,217,255,.10);
+      border-color: rgba(181,108,255,.28);
+      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.10);
     }
 
-    button:active{
-      transform: translateY(1px);
-    }
+    button:active{ transform: translateY(1px); }
 
     button:focus-visible{
       outline:none;
-      box-shadow: 0 0 0 3px rgba(102,217,255,.22), var(--shadow2);
+      box-shadow: 0 0 0 3px rgba(181,108,255,.22), var(--shadow2);
     }
 
-    /* “操作系”ボタンを少し主役に */
+    /* 主役ボタン（次へ） */
     #btnNext{
-      border-color: rgba(102,217,255,.30);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(102,217,255,.12);
+      border-color: rgba(181,108,255,.35);
+      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.12);
     }
 
-    /* file input */
     input[type="file"]{
       color:rgba(234,240,255,.86);
       font-size:12px;
     }
 
-    /* details */
     details{
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
       border:1px solid rgba(255,255,255,.12);
@@ -206,16 +207,14 @@
       display:inline-block;
       margin-right:8px;
       transform: translateY(-1px);
-      color:rgba(102,217,255,.85);
+      color:rgba(181,108,255,.85);
     }
     details[open] summary::before{content:"▾"}
 
-    /* status colors */
     .status{font-size:12px;color:var(--ok)}
     .status.warn{color:var(--warn)}
     .status.err{color:var(--err)}
 
-    /* code chip */
     code{
       background:rgba(0,0,0,.25);
       border:1px solid rgba(255,255,255,.12);
@@ -224,12 +223,11 @@
       color:rgba(234,240,255,.88);
     }
 
-    /* ===== Mobile polish ===== */
     @media (max-width:560px){
       .wrap{padding:14px}
       h1{font-size:20px}
       .big{font-size:19px}
-      button{flex:1 1 calc(50% - 10px)}
+      /* ボタンは2列が基本、足りなければ自然に折り返し */
     }
   </style>
 </head>
@@ -246,9 +244,14 @@
       <span id="status" class="status">起動中…</span>
     </div>
 
-    <div class="row">
+    <!-- ✅UI整理：主操作 -->
+    <div class="row primary">
       <button id="btnNext">次へ（ランダム）</button>
       <button id="btnReveal">答えを見る</button>
+    </div>
+
+    <!-- ✅UI整理：補助操作 -->
+    <div class="row secondary">
       <button id="btnShuffle">シャッフル（出題履歴リセット）</button>
       <button id="btnCopy">表裏をコピー</button>
     </div>
@@ -282,7 +285,6 @@
       </div>
       <div class="muted">
         CSV形式（推奨）：<code>front,back</code>（1行目ヘッダ）。<br>
-        
       </div>
     </details>
 
@@ -308,6 +310,38 @@
   const KEY_UPDATED = "fc_updated_v2";
   const KEY_SOURCE = "fc_source_v2"; // "default" | "custom"
   const KEY_VERSION = "fc_deck_version_v2"; // meta.version when default
+
+  // ✅軽量SRS（苦手推定）用
+  const KEY_STATS = "fc_stats_v1";
+  // stats shape:
+  // {
+  //   revealCount: { [idx]: number },
+  //   struggleScore: { [idx]: number },
+  //   lastShownAt: number|null,
+  //   lastRevealAt: number|null,
+  //   lastIndex: number|null
+  // }
+
+  function loadStats() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY_STATS)) ?? {
+        revealCount: {},
+        struggleScore: {},
+        lastShownAt: null,
+        lastRevealAt: null,
+        lastIndex: null
+      };
+    } catch {
+      return { revealCount:{}, struggleScore:{}, lastShownAt:null, lastRevealAt:null, lastIndex:null };
+    }
+  }
+  function saveStats(s) {
+    localStorage.setItem(KEY_STATS, JSON.stringify(s));
+  }
+  function clampScore(x) {
+    if (!Number.isFinite(x)) return 0;
+    return Math.max(0, Math.min(20, x));
+  }
 
   // --- DOM
   const elFront = document.getElementById("front");
@@ -421,16 +455,30 @@
       elBack.textContent = "";
       return;
     }
+
     currentIndex = i;
     const c = deck[i];
     elPos.textContent = `#${i+1} / ${deck.length}`;
     elFront.textContent = c.front ?? "";
     elBack.textContent  = c.back ?? "";
     elBack.style.display = "none";
+
+    // ✅SRS用：カード表示時刻を記録
+    const stats = loadStats();
+    stats.lastShownAt = Date.now();
+    stats.lastRevealAt = null;
+    stats.lastIndex = i;
+    saveStats(stats);
   }
 
-  function nextRandom() {
-    if (deck.length === 0) return;
+  function resetSessionHistory() {
+    state.history = [];
+    saveState(state);
+  }
+
+  // --- 既存の「見た目ランダム」抽選（直近回避）
+  function pickRandomAvoidingRecent() {
+    if (deck.length === 0) return -1;
 
     const maxTry = Math.min(80, deck.length * 2);
     let i = -1;
@@ -444,7 +492,50 @@
       state.history = [];
       i = Math.floor(Math.random() * deck.length);
     }
+    return i;
+  }
 
+  // ✅苦手寄り（重み付き）抽選
+  function pickWeightedByStruggle() {
+    if (deck.length === 0) return -1;
+
+    const stats = loadStats();
+    const scores = stats.struggleScore || {};
+
+    // 基本1、苦手スコアに応じて最大+6程度まで重くする（露骨すぎない）
+    const weights = deck.map((_, i) => {
+      const s = Number(scores[String(i)] ?? 0);
+      const w = 1 + Math.min(6, Math.max(0, s));
+      return w;
+    });
+
+    // 直近回避（重み抽選でも露骨連続を避ける）
+    const recentSet = new Set(deck.length >= 8 ? state.history : []);
+    let total = 0;
+    const usable = weights.map((w, i) => {
+      if (i === currentIndex) return 0;
+      if (recentSet.has(i)) return 0.2; // 少しだけ残す（詰まり救済のため完全ゼロにしない）
+      return w;
+    });
+    total = usable.reduce((a,b)=>a+b,0);
+    if (total <= 0) return pickRandomAvoidingRecent();
+
+    let r = Math.random() * total;
+    for (let i = 0; i < usable.length; i++) {
+      r -= usable[i];
+      if (r <= 0) return i;
+    }
+    return pickRandomAvoidingRecent();
+  }
+
+  // ✅「ランダムを装った最適化」：70%通常、30%苦手寄り
+  function nextSmart() {
+    if (deck.length === 0) return;
+
+    const useStruggle = (Math.random() < 0.30);
+    const i = useStruggle ? pickWeightedByStruggle() : pickRandomAvoidingRecent();
+
+    // 履歴更新（既存挙動に準拠）
     state.history.push(i);
     if (state.history.length > Math.min(80, deck.length)) {
       state.history = state.history.slice(-Math.min(80, deck.length));
@@ -458,9 +549,31 @@
     updateKPI();
   }
 
-  function resetSessionHistory() {
-    state.history = [];
-    saveState(state);
+  // ✅「次へ」直前に、滞在時間で苦手スコアを微調整
+  function updateStruggleByDwell() {
+    const stats = loadStats();
+    if (stats.lastIndex == null || stats.lastIndex < 0) return;
+
+    const idx = String(stats.lastIndex);
+    const scores = stats.struggleScore || {};
+    let s = Number(scores[idx] ?? 0);
+
+    // 裏を開いていない場合は学習判定しない（自由運用を尊重）
+    if (stats.lastRevealAt == null) {
+      scores[idx] = clampScore(s);
+      stats.struggleScore = scores;
+      saveStats(stats);
+      return;
+    }
+
+    const dt = Date.now() - stats.lastRevealAt; // 裏→次へ の時間
+    // 目安：6秒以上→詰まり、1.5秒未満→軽快
+    if (dt >= 6000) s += 1.0;
+    else if (dt <= 1500) s -= 0.5;
+
+    scores[idx] = clampScore(s);
+    stats.struggleScore = scores;
+    saveStats(stats);
   }
 
   function parseDeckFromCSV(text) {
@@ -503,11 +616,7 @@
   async function ensureDefaultDeckLoaded() {
     // 1) read meta (best-effort)
     let meta = null;
-    try {
-      meta = await fetchJSON(META_URL);
-    } catch {
-      // offline or blocked; continue
-    }
+    try { meta = await fetchJSON(META_URL); } catch {}
 
     const source = getSource();
     const storedVersion = getVersion();
@@ -518,10 +627,7 @@
     const needsUpdate = canAutoUpdate && metaVersion && storedVersion && (metaVersion !== storedVersion);
 
     if (!needsInit && !needsUpdate) {
-      if (metaVersion && !storedVersion && source==="default") {
-        // first time storing version even if deck exists
-        setVersion(metaVersion);
-      }
+      if (metaVersion && !storedVersion && source==="default") setVersion(metaVersion);
       return;
     }
 
@@ -539,7 +645,6 @@
       showCard(0);
       setStatus(needsUpdate ? "既定デッキを更新しました" : "準備完了（既定デッキ）");
     } catch (e) {
-      // fallback: keep existing deck if any
       if (deck.length) {
         setStatus("既定デッキの読み込みに失敗しました（端末内データで継続）", "warn");
       } else {
@@ -550,12 +655,48 @@
   }
 
   // --- Buttons
+
+  // ✅答えを見る：2回目以降の裏表示だけ苦手寄りに（初回は全員見るため）
   document.getElementById("btnReveal").onclick = () => {
     if (deck.length === 0) return;
-    elBack.style.display = (elBack.style.display === "none") ? "block" : "none";
+
+    const willShow = (elBack.style.display === "none");
+    elBack.style.display = willShow ? "block" : "none";
+
+    if (willShow) {
+      const stats = loadStats();
+      stats.lastRevealAt = Date.now();
+      stats.lastIndex = currentIndex;
+
+      const idx = String(currentIndex);
+      const rc = stats.revealCount || {};
+      const scores = stats.struggleScore || {};
+
+      const newCount = (Number(rc[idx] ?? 0) + 1);
+      rc[idx] = newCount;
+
+      // ✅2回目以降に裏を開く＝理解が固まっていない可能性が高い
+      if (newCount >= 2) {
+        const s = Number(scores[idx] ?? 0);
+        scores[idx] = clampScore(s + 1.0);
+      }
+
+      stats.revealCount = rc;
+      stats.struggleScore = scores;
+      saveStats(stats);
+    }
   };
-  document.getElementById("btnNext").onclick = () => nextRandom();
-  document.getElementById("btnShuffle").onclick = () => { resetSessionHistory(); nextRandom(); };
+
+  // ✅次へ：滞在時間で微調整→smart抽選
+  document.getElementById("btnNext").onclick = () => {
+    updateStruggleByDwell();
+    nextSmart();
+  };
+
+  document.getElementById("btnShuffle").onclick = () => {
+    resetSessionHistory();
+    nextSmart();
+  };
 
   document.getElementById("btnCopy").onclick = async () => {
     if (deck.length === 0) return;
@@ -579,7 +720,7 @@
     deck = newDeck;
     saveDeck(deck);
     setSource("custom");
-    setVersion(""); // custom deck isn't tied to meta
+    setVersion("");
     state.history = [];
     saveState(state);
 
@@ -604,7 +745,7 @@
   document.getElementById("btnResetDefault").onclick = async () => {
     if (!confirm("既定デッキに戻します。よろしいですか？")) return;
     setSource("default");
-    setVersion(""); // will be set after meta fetch
+    setVersion("");
     deck = [];
     saveDeck(deck);
     state.history = [];
@@ -620,6 +761,7 @@
     localStorage.removeItem(KEY_UPDATED);
     localStorage.removeItem(KEY_SOURCE);
     localStorage.removeItem(KEY_VERSION);
+    localStorage.removeItem(KEY_STATS); // ✅追加：苦手推定も初期化
     deck = [];
     state = loadState();
     currentIndex = -1;
@@ -640,7 +782,9 @@
     await ensureDefaultDeckLoaded();
     updateKPI();
     if (deck.length && currentIndex < 0) showCard(0);
-    if (deck.length && currentIndex === 0) setStatus(getSource()==="custom" ? "準備完了（カスタム）" : "準備完了（既定デッキ）");
+    if (deck.length && currentIndex === 0) {
+      setStatus(getSource()==="custom" ? "準備完了（カスタム）" : "準備完了（既定デッキ）");
+    }
   })();
 </script>
 </body>
