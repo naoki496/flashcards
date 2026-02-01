@@ -296,10 +296,16 @@
 <script>
   // --- PWA register
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch(()=>{});
-    });
-  }
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then((reg) => {
+        // ✅ここが追加：更新を即チェックさせる
+        reg.update();
+      })
+      .catch(() => {});
+  });
+}
 
   // --- Constants / keys
   const DEFAULT_DECK_URL = "./deck_default.csv";
