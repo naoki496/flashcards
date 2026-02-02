@@ -17,7 +17,6 @@
       --danger:#ff5c7a;
 
       --panel:rgba(255,255,255,.06);
-      --panel2:rgba(255,255,255,.10);
       --border:rgba(255,255,255,.14);
       --text:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.62);
@@ -46,31 +45,12 @@
       overflow-x:hidden;
     }
 
-    .wrap{
-      max-width:var(--maxW);
-      margin:0 auto;
-      padding:18px 14px 28px;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
+    .wrap{ max-width:var(--maxW); margin:0 auto; padding:18px 14px 28px; }
+    .topbar{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+    .brand{ display:flex; flex-direction:column; gap:4px; }
     .brand h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:.02em;
-      display:flex;
-      align-items:center;
-      gap:10px;
+      margin:0; font-size:20px; letter-spacing:.02em;
+      display:flex; align-items:center; gap:10px;
     }
     .brandMark{
       width:10px;height:10px;border-radius:999px;
@@ -80,7 +60,7 @@
     }
 
     .glass{
-      background:var(--panel);
+      background:rgba(255,255,255,.06);
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
@@ -88,16 +68,9 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
-    .kpis{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:flex-end;
-    }
+    .kpis{ display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
       border-radius:999px;
       border:1px solid var(--border);
@@ -113,18 +86,12 @@
     }
     .dot.ok{ background:var(--ok); box-shadow:0 0 16px rgba(92,255,183,.35); }
 
-    .main{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-
+    .main{ display:grid; grid-template-columns:1fr; gap:12px; }
     .card{
       padding:16px 14px;
       position:relative;
       overflow:hidden;
     }
-
     .card::before{
       content:"";
       position:absolute;
@@ -178,13 +145,11 @@
       border-style:dashed;
       color:rgba(255,255,255,.75);
     }
-
     .bgmBtn[data-on="true"]{
       border-color:rgba(92,255,183,.55);
       background:rgba(92,255,183,.10);
       box-shadow:0 0 0 2px rgba(92,255,183,.14);
     }
-
     .miniBtn{
       min-width:44px;
       min-height:44px;
@@ -203,7 +168,6 @@
       overflow:hidden;
       position:relative;
     }
-
     .fcTop{
       padding:14px 14px 10px;
       border-bottom:1px solid rgba(255,255,255,.10);
@@ -218,12 +182,7 @@
       line-height:1.35;
     }
     .status strong{ color:rgba(255,255,255,.86); }
-
-    .navArrows{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
+    .navArrows{ display:flex; gap:8px; align-items:center; }
 
     .fcBody{
       padding:16px 14px 18px;
@@ -232,7 +191,6 @@
       flex-direction:column;
       gap:10px;
     }
-
     .front{
       font-size:20px;
       letter-spacing:.02em;
@@ -250,12 +208,7 @@
     }
     .back.show{ display:block; }
 
-    .btnRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:12px;
-    }
+    .btnRow{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
 
     /* Swipe affordance */
     .swipeAfford{
@@ -268,17 +221,8 @@
       font-size:12px;
       user-select:none;
     }
-    .affSide{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
-    .affPills{
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
+    .affSide{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .affPills{ display:flex; align-items:center; gap:6px; }
     .affPill{
       font-family:var(--mono);
       font-size:12px;
@@ -291,8 +235,7 @@
     }
 
     .chev{
-      width:30px;
-      height:18px;
+      width:30px; height:18px;
       display:inline-block;
       position:relative;
       opacity:.80;
@@ -310,16 +253,11 @@
       opacity:.75;
       animation: nudgeL 1.4s ease-in-out infinite;
     }
-    .chev::after{
-      left:12px;
-      opacity:.42;
-      animation-delay:.14s;
-    }
+    .chev::after{ left:12px; opacity:.42; animation-delay:.14s; }
     .chev.left::before, .chev.left::after{
       transform: translateY(-50%) rotate(315deg);
       animation-name:nudgeR;
     }
-
     @keyframes nudgeL{
       0%{ transform: translate(0, -50%) rotate(135deg); opacity:.55; }
       50%{ transform: translate(-6px, -50%) rotate(135deg); opacity:.85; }
@@ -464,7 +402,7 @@
             </div>
             <div class="navArrows">
               <button class="secondaryBtn miniBtn" id="btnPrev" type="button" aria-label="前へ戻る">←</button>
-              <button class="secondaryBtn miniBtn" id="btnNext" type="button" aria-label="次へ">→</button>
+              <button class="secondaryBtn miniBtn" id="btnNext" type="button" aria-label="次へ（ランダム）">→</button>
             </div>
           </div>
 
@@ -474,7 +412,7 @@
 
             <div class="btnRow">
               <button class="primaryBtn" id="btnToggle" type="button">答えを見る</button>
-              <button class="secondaryBtn" id="btnShuffle" type="button">シャッフル</button>
+              <button class="secondaryBtn" id="btnShuffle" type="button">ランダムをリセット</button>
               <button class="ghostBtn" id="btnResetToday" type="button">今日カウントをリセット</button>
             </div>
 
@@ -482,8 +420,8 @@
               <div class="affSide">
                 <span class="chev left" aria-hidden="true"></span>
                 <div class="affPills">
-                  <span class="affPill">←</span>
-                  <span class="muted">戻る</span>
+                  <span class="affPill">→</span>
+                  <span class="muted">スワイプで戻る</span>
                 </div>
               </div>
 
@@ -493,15 +431,15 @@
 
               <div class="affSide" style="justify-content:flex-end;">
                 <div class="affPills">
-                  <span class="muted">次へ</span>
-                  <span class="affPill">→</span>
+                  <span class="muted">ランダム次へ</span>
+                  <span class="affPill">←</span>
                 </div>
                 <span class="chev" aria-hidden="true"></span>
               </div>
             </div>
 
             <div class="smallNote">
-              ※BGMはボタン操作後に再生できます（自動再生はしません）
+              ※次へはランダムです。戻るは「直前のカード」に戻ります。
             </div>
           </div>
         </div>
@@ -546,9 +484,9 @@
 
   <script>
     /********************
-     * 基本設定（古文単語）
+     * 基本設定（古文単語 / ランダム遷移＋履歴）
      ********************/
-    const STORAGE_PREFIX = "hattoKobunFlash.v1";
+    const STORAGE_PREFIX = "hattoKobunFlash.v2"; // v2: ランダム履歴実装
     const KEY_STATE      = STORAGE_PREFIX + ".state";
     const KEY_SEEN       = STORAGE_PREFIX + ".seenIds";
     const KEY_TODAY      = STORAGE_PREFIX + ".today";
@@ -592,9 +530,19 @@
 
     $("storageKeyHint").textContent = STORAGE_PREFIX;
 
+    /********************
+     * 状態
+     ********************/
     let cards = [];     // {id, front, back}
-    let order = [];     // indices
-    let idx = 0;        // order index
+
+    // ランダム管理（袋方式）
+    let bag = [];       // 未使用の cardIndex 群（シャッフル済）
+    let currentIndex = -1;
+
+    // 履歴（戻る用）
+    let history = [];   // cardIndex の履歴
+    let histPos = 0;    // 現在位置（0..history.length-1）
+
     let showBack = false;
 
     function todayKey(){
@@ -663,16 +611,30 @@
     }
 
     function persistState(){
-      saveJSON(KEY_STATE, { idx, order, showBack });
+      saveJSON(KEY_STATE, {
+        bag,
+        currentIndex,
+        history,
+        histPos,
+        showBack
+      });
     }
     function restoreState(){
       const st = loadJSON(KEY_STATE, null);
       if(!st) return;
-      if(Array.isArray(st.order)) order = st.order;
-      if(Number.isInteger(st.idx)) idx = st.idx;
+
+      if(Array.isArray(st.bag)) bag = st.bag;
+      if(Number.isInteger(st.currentIndex)) currentIndex = st.currentIndex;
+
+      if(Array.isArray(st.history)) history = st.history;
+      if(Number.isInteger(st.histPos)) histPos = st.histPos;
+
       if(typeof st.showBack === "boolean") showBack = st.showBack;
     }
 
+    /********************
+     * CSV 処理（簡易・堅牢）
+     ********************/
     function normalizeHeader(h){
       return String(h||"").trim().toLowerCase()
         .replace(/\s+/g,"")
@@ -746,6 +708,9 @@
       });
     }
 
+    /********************
+     * デフォルトCSV読込
+     ********************/
     async function fetchText(url){
       const res = await fetch(url, { cache: "no-store" });
       if(!res.ok) throw new Error(`fetch failed: ${url}`);
@@ -765,23 +730,62 @@
       throw lastErr || new Error("deck_default.csv not found");
     }
 
-    function clampIndex(){
-      if(order.length === 0){ idx = 0; return; }
-      if(idx < 0) idx = 0;
-      if(idx >= order.length) idx = order.length - 1;
+    /********************
+     * ランダム袋（bag）
+     ********************/
+    function shuffleArray(a){
+      for(let i=a.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
     }
 
-    function currentCard(){
-      if(cards.length === 0 || order.length === 0) return null;
-      const ci = order[idx];
-      return cards[ci] || null;
+    function refillBag(){
+      bag = Array.from({length: cards.length}, (_,i)=>i);
+      shuffleArray(bag);
+
+      // 直前と同じが先頭に来たら避ける（可能な限り）
+      if(cards.length >= 2 && bag[0] === currentIndex){
+        const k = bag.findIndex(x => x !== currentIndex);
+        if(k > 0){
+          [bag[0], bag[k]] = [bag[k], bag[0]];
+        }
+      }
     }
 
+    function drawNextIndex(){
+      if(cards.length === 0) return -1;
+      if(!Array.isArray(bag) || bag.length === 0) refillBag();
+
+      // bagから取り出す
+      let next = bag.shift();
+
+      // もし同じだったら（カード数が1の場合は仕方ない）
+      if(cards.length >= 2 && next === currentIndex){
+        if(bag.length === 0) refillBag();
+        // もう一回引く
+        const alt = bag.shift();
+        // 引けなかったらそのまま
+        if(typeof alt === "number") next = alt;
+      }
+      return next;
+    }
+
+    /********************
+     * 表示
+     ********************/
     function updateKpis(){
       elKpiTotal.textContent = String(cards.length || 0);
       elTotal.textContent = String(cards.length || 0);
       elKpiToday.textContent = String(getTodayCount());
       elSeen.textContent = `seen: ${getSeenSet().size}`;
+    }
+
+    function currentCard(){
+      if(cards.length === 0) return null;
+      if(currentIndex < 0 || currentIndex >= cards.length) return null;
+      return cards[currentIndex];
     }
 
     function render(){
@@ -800,10 +804,10 @@
       }
 
       btnToggle.disabled = false;
-      btnPrev.disabled = (idx <= 0);
-      btnNext.disabled = (idx >= order.length - 1);
+      btnPrev.disabled = (histPos <= 0);
+      btnNext.disabled = (cards.length === 0);
 
-      elIdx.textContent = String(idx + 1);
+      elIdx.textContent = String(histPos + 1); // 履歴上の位置
       elFront.textContent = c.front || "(表が空です)";
       elBack.textContent = c.back || "(裏が空です)";
 
@@ -825,25 +829,56 @@
       }
     }
 
-    function goRandom(){
-      if(idx >= order.length - 1) return;
-      idx++;
+    /********************
+     * ナビ（戻る／次へランダム）
+     ********************/
+    function goPrev(){
+      if(histPos <= 0) return;
+      histPos--;
+      currentIndex = history[histPos];
       showBack = false;
-      const c = currentCard();
-      markSeen(c);
-      incTodayCount();
+
+      markSeen(currentCard());
       persistState();
       render();
     }
 
-    function goPrev(){
-      if(idx <= 0) return;
-      idx--;
+    function goNextRandom(){
+      if(cards.length === 0) return;
+
+      // もし「戻る」後に「次へ」するなら、まずは履歴の前進（＝以前引いたものに戻る）を優先
+      if(histPos < history.length - 1){
+        histPos++;
+        currentIndex = history[histPos];
+        showBack = false;
+
+        markSeen(currentCard());
+        // 「前進」は学習上は“次へ”だが「新しく引いた」わけではないので今日カウントは増やさない
+        persistState();
+        render();
+        return;
+      }
+
+      // 新規に引く
+      const nextIdx = drawNextIndex();
+      if(nextIdx < 0) return;
+
+      currentIndex = nextIdx;
       showBack = false;
-      const c = currentCard();
-      markSeen(c);
+
+      history.push(currentIndex);
+      histPos = history.length - 1;
+
+      markSeen(currentCard());
+      incTodayCount(); // ✅ 新規ランダムで進んだ時だけ増やす
       persistState();
       render();
+    }
+
+    function resetRandom(){
+      // bagを作り直し（次から新鮮に）
+      refillBag();
+      showToast("ランダム順をリセット");
     }
 
     function toggleBack(){
@@ -852,31 +887,77 @@
       render();
     }
 
-    function shuffleOrder(){
-      for(let i=order.length-1; i>0; i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [order[i], order[j]] = [order[j], order[i]];
-      }
-      idx = 0;
-      showBack = false;
-      persistState();
-      render();
-      showToast("シャッフルしました");
-    }
-
     function resetAll(){
       localStorage.removeItem(KEY_STATE);
       localStorage.removeItem(KEY_SEEN);
       localStorage.removeItem(KEY_TODAY);
       localStorage.removeItem(KEY_TODAY_DATE);
-      order = cards.map((_,i)=>i);
-      idx = 0;
+
+      bag = [];
+      currentIndex = -1;
+      history = [];
+      histPos = 0;
       showBack = false;
-      render();
+
+      // 起動状態へ戻す
+      initAfterDeckLoaded(true);
+
       showToast("初期化しました");
     }
 
-    // BGM（初期OFF）
+    function initAfterDeckLoaded(forceFresh=false){
+      // cardsが読み込めている前提
+      if(cards.length === 0){
+        bag = [];
+        currentIndex = -1;
+        history = [];
+        histPos = 0;
+        showBack = false;
+        persistState();
+        render();
+        return;
+      }
+
+      if(forceFresh){
+        refillBag();
+        currentIndex = drawNextIndex();
+        history = [currentIndex];
+        histPos = 0;
+        showBack = false;
+        markSeen(currentCard());
+        persistState();
+        render();
+        return;
+      }
+
+      // 既存stateの整合性チェック
+      const validIndex = (n)=>Number.isInteger(n) && n>=0 && n<cards.length;
+
+      history = Array.isArray(history) ? history.filter(validIndex) : [];
+      if(history.length === 0){
+        refillBag();
+        currentIndex = drawNextIndex();
+        history = [currentIndex];
+        histPos = 0;
+      }else{
+        histPos = Number.isInteger(histPos) ? Math.max(0, Math.min(histPos, history.length - 1)) : 0;
+        currentIndex = history[histPos];
+      }
+
+      if(!Array.isArray(bag)) bag = [];
+      bag = bag.filter(validIndex);
+
+      // bagが空なら補充
+      if(bag.length === 0) refillBag();
+
+      markSeen(currentCard());
+      persistState();
+      render();
+    }
+
+    /********************
+     * BGM（初期OFF）
+     ********************/
     if(btnBgm && audioBgm){
       btnBgm.addEventListener("click", async ()=>{
         try{
@@ -897,7 +978,11 @@
       });
     }
 
-    // Swipe（右=戻る / 左=次へ）+ 視覚エフェクト
+    /********************
+     * Swipe
+     *  - 指が左へ（dx<0）= ランダム次へ
+     *  - 指が右へ（dx>0）= 戻る（履歴）
+     ********************/
     (function setupSwipe(){
       const root = $("swipeRoot");
       if(!root) return;
@@ -926,21 +1011,15 @@
 
         if(Math.abs(dx) >= THRESH){
           if(dx < 0){
-            if(idx < order.length - 1){
-              flashGlow("right");
-              goNext();
-              showToast("次へ");
-            }else{
-              flashGlow("right");
-              showToast("最後のカードです");
-            }
+            flashGlow("right");
+            goNextRandom();
+            showToast("ランダム次へ");
           }else{
-            if(idx > 0){
-              flashGlow("left");
+            flashGlow("left");
+            if(histPos > 0){
               goPrev();
               showToast("前へ戻る");
             }else{
-              flashGlow("left");
               showToast("これ以上戻れません");
             }
           }
@@ -948,7 +1027,9 @@
       }, {passive:true});
     })();
 
-    // CSVインポート
+    /********************
+     * CSVインポート
+     ********************/
     fileCsv.addEventListener("change", async ()=>{
       const f = fileCsv.files && fileCsv.files[0];
       if(!f) return;
@@ -961,15 +1042,18 @@
           return;
         }
         cards = built;
-        order = cards.map((_,i)=>i);
-        idx = 0;
-        showBack = false;
 
         internalCsvUsed = f.name;
         internalUpdatedAt = new Date().toLocaleString();
 
-        persistState();
-        render();
+        // インポート後はランダム系を“安全にリセット”
+        bag = [];
+        history = [];
+        histPos = 0;
+        currentIndex = -1;
+        showBack = false;
+
+        initAfterDeckLoaded(true);
         showToast("CSVを読み込みました");
       }catch(e){
         showToast("CSV読み込みに失敗しました");
@@ -978,24 +1062,30 @@
       }
     });
 
-    btnLoadDefault.addEventListener("click", async ()=>{ await boot(true); });
-
+    /********************
+     * ボタンイベント
+     ********************/
     btnNext.addEventListener("click", ()=>{
-      if(idx < order.length - 1){
-        flashGlow("right"); goRandom(); showToast("次へ");
-      }else{
-        flashGlow("right"); showToast("最後のカードです");
-      }
+      flashGlow("right");
+      goNextRandom();
+      showToast("ランダム次へ");
     });
+
     btnPrev.addEventListener("click", ()=>{
-      if(idx > 0){
-        flashGlow("left"); goPrev(); showToast("前へ戻る");
+      flashGlow("left");
+      if(histPos > 0){
+        goPrev();
+        showToast("前へ戻る");
       }else{
-        flashGlow("left"); showToast("これ以上戻れません");
+        showToast("これ以上戻れません");
       }
     });
+
     btnToggle.addEventListener("click", toggleBack);
-    btnShuffle.addEventListener("click", shuffleOrder);
+
+    btnShuffle.addEventListener("click", ()=>{
+      resetRandom();
+    });
 
     btnResetToday.addEventListener("click", ()=>{
       resetTodayCount();
@@ -1009,6 +1099,13 @@
       resetAll();
     });
 
+    btnLoadDefault.addEventListener("click", async ()=>{
+      await boot(true);
+    });
+
+    /********************
+     * 起動
+     ********************/
     async function boot(forceReload=false){
       try{
         elFront.textContent = "読み込み中…";
@@ -1025,35 +1122,28 @@
         const built = buildCards(parsed);
 
         if(built.length === 0){
-          cards = []; order = []; idx = 0; showBack = false;
+          cards = [];
           internalCsvUsed = used.replace("./","");
           internalUpdatedAt = new Date().toLocaleString();
-          render();
+          initAfterDeckLoaded(true);
           showToast("デフォルトCSVが空です");
           return;
         }
 
         cards = built;
-
-        const okOrder = Array.isArray(order)
-          && order.length === cards.length
-          && order.every(n=>Number.isInteger(n) && n>=0 && n<cards.length);
-
-        if(!okOrder){
-          order = cards.map((_,i)=>i);
-          idx = 0;
-          showBack = false;
-        }
-        clampIndex();
-
         internalCsvUsed = used.replace("./","");
         internalUpdatedAt = new Date().toLocaleString();
 
-        markSeen(currentCard());
-        persistState();
-        render();
+        // deck更新で履歴が壊れてても安全に整合
+        initAfterDeckLoaded(false);
       }catch(e){
-        cards = []; order = []; idx = 0; showBack = false;
+        cards = [];
+        bag = [];
+        history = [];
+        histPos = 0;
+        currentIndex = -1;
+        showBack = false;
+        persistState();
         render();
         showToast("deck_default.csv を読み込めません（配置/名前を確認）");
       }
