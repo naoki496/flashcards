@@ -7,30 +7,26 @@
   <meta name="theme-color" content="#070A10" />
   <link rel="manifest" href="manifest.json">
 
-  <link rel="manifest" href="manifest.json">
-
-<style>
-      :root{
-        --bg0:#070A10;
-        --bg1:#0B1220;
-        --panel:rgba(255,255,255,.06);
-        --panel2:rgba(255,255,255,.08);
-        --line:rgba(255,255,255,.12);
-        --line2:rgba(255,255,255,.18);
-        --text:#EAF0FF;
-        --muted:rgba(234,240,255,.72);
-        --accent:#B56CFF;
-        --accent2:#66D9FF;
-        --warn:#FFCC66;
-        --err:#FF6B7A;
-        --ok:#7CFFB2;
-        --r:16px;
-        --r2:14px;
-        --shadow: 0 16px 44px rgba(0,0,0,.55);
-        --shadow2: 0 10px 24px rgba(0,0,0,.45);
-      }
-
-/* ここに body / .card / button などのCSSが続く */
+  <style>
+    :root{
+      --bg0:#070A10;
+      --bg1:#0B1220;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.12);
+      --line2:rgba(255,255,255,.18);
+      --text:#EAF0FF;
+      --muted:rgba(234,240,255,.72);
+      --accent:#B56CFF;
+      --accent2:#66D9FF;
+      --warn:#FFCC66;
+      --err:#FF6B7A;
+      --ok:#7CFFB2;
+      --r:16px;
+      --r2:14px;
+      --shadow: 0 16px 44px rgba(0,0,0,.55);
+      --shadow2: 0 10px 24px rgba(0,0,0,.45);
+    }
 
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -47,191 +43,10 @@
       overflow-x:hidden;
     }
 
-    a{color:rgba(181,108,255,.92)}
-    a:hover{color:rgba(181,108,255,1)}
-
-    .wrap{
-      max-width:860px;
-      margin:0 auto;
-      padding:16px;
-    }
-
-    h1{
-      margin:6px 0 6px;
-      font-size:22px;
-      letter-spacing:.06em;
-      line-height:1.25;
-      text-shadow: 0 0 18px rgba(181,108,255,.18);
-    }
-
-    .muted{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:12px 0;
-      align-items:center;
-    }
-
-    /* ✅ UI整理：主操作／補助 */
-    .row.primary button{
-      flex:1 1 calc(50% - 10px);
-      font-size:16px;
-    }
-    .row.secondary button{
-      flex:1 1 calc(50% - 10px);
-      font-size:13px;
-      opacity:.80;
-    }
-
-    .kpi{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .pill{
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:12px;
-      color:rgba(234,240,255,.86);
-      box-shadow: 0 8px 18px rgba(0,0,0,.18);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .sep{
-      height:1px;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
-      margin:14px 0;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:var(--r);
-      padding:18px;
-      min-height:180px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(520px 280px at 18% 10%, rgba(181,108,255,.16), transparent 60%),
-        radial-gradient(560px 340px at 88% 20%, rgba(102,217,255,.10), transparent 62%);
-      pointer-events:none;
-    }
-
-    .card > *{position:relative}
-
-    .big{
-      font-size:20px;
-      line-height:1.45;
-      white-space:pre-wrap;
-    }
-
-    #pos{
-      color:rgba(234,240,255,.72);
-    }
-
-    button{
-      appearance:none;
-      -webkit-appearance:none;
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      color:rgba(234,240,255,.92);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:12px;
-      padding:12px 14px;
-      cursor:pointer;
-      box-shadow: var(--shadow2);
-      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
-      min-height:44px;
-      touch-action:manipulation;
-    }
-
-    button:hover{
-      background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08));
-      border-color: rgba(181,108,255,.28);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.10);
-    }
-
-    button:active{ transform: translateY(1px); }
-
-    button:focus-visible{
-      outline:none;
-      box-shadow: 0 0 0 3px rgba(181,108,255,.22), var(--shadow2);
-    }
-
-    /* 主役ボタン（次へ） */
-    #btnNext{
-      border-color: rgba(181,108,255,.35);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.12);
-    }
-
-    input[type="file"]{
-      color:rgba(234,240,255,.86);
-      font-size:12px;
-    }
-
-    details{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:var(--r2);
-      padding:10px 12px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    summary{
-      cursor:pointer;
-      color:rgba(234,240,255,.84);
-      list-style:none;
-    }
-    summary::-webkit-details-marker{display:none}
-    summary::before{
-      content:"▸";
-      display:inline-block;
-      margin-right:8px;
-      transform: translateY(-1px);
-      color:rgba(181,108,255,.85);
-    }
-    details[open] summary::before{content:"▾"}
-
-    .status{font-size:12px;color:var(--ok)}
-    .status.warn{color:var(--warn)}
-    .status.err{color:var(--err)}
-
-    code{
-      background:rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.12);
-      padding:2px 8px;
-      border-radius:999px;
-      color:rgba(234,240,255,.88);
-    }
-
-    @media (max-width:560px){
-      .wrap{padding:14px}
-      h1{font-size:20px}
-      .big{font-size:19px}
-      /* ボタンは2列が基本、足りなければ自然に折り返し */
-    }
+    /* …以下は貼ってくれたCSSの続きでOK… */
   </style>
 </head>
+
 
 <body>
   <div class="wrap">
