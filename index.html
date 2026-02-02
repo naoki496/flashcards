@@ -43,14 +43,203 @@
       overflow-x:hidden;
     }
 
-    /* …以下は貼ってくれたCSSの続きでOK… */
+    a{color:rgba(181,108,255,.92)}
+    a:hover{color:rgba(181,108,255,1)}
+
+    .wrap{
+      max-width:860px;
+      margin:0 auto;
+      padding:16px;
+    }
+
+    h1{
+      margin:6px 0 6px;
+      font-size:22px;
+      letter-spacing:.06em;
+      line-height:1.25;
+      text-shadow: 0 0 18px rgba(181,108,255,.18);
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:12px 0;
+      align-items:center;
+    }
+
+    /* ✅ UI整理：主操作／補助 */
+    .row.primary button{
+      flex:1 1 calc(50% - 10px);
+      font-size:16px;
+    }
+    .row.secondary button{
+      flex:1 1 calc(50% - 10px);
+      font-size:13px;
+      opacity:.80;
+    }
+
+    .kpi{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      color:rgba(234,240,255,.86);
+      box-shadow: 0 8px 18px rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .sep{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      margin:14px 0;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:var(--r);
+      padding:18px;
+      min-height:180px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(520px 280px at 18% 10%, rgba(181,108,255,.16), transparent 60%),
+        radial-gradient(560px 340px at 88% 20%, rgba(102,217,255,.10), transparent 62%);
+      pointer-events:none;
+    }
+
+    .card > *{position:relative}
+
+    .big{
+      font-size:20px;
+      line-height:1.45;
+      white-space:pre-wrap;
+    }
+
+    #pos{
+      color:rgba(234,240,255,.72);
+    }
+
+    button{
+      appearance:none;
+      -webkit-appearance:none;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      color:rgba(234,240,255,.92);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:12px;
+      padding:12px 14px;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+      min-height:44px;
+      touch-action:manipulation;
+    }
+
+    button:hover{
+      background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08));
+      border-color: rgba(181,108,255,.28);
+      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.10);
+    }
+
+    button:active{ transform: translateY(1px); }
+
+    button:focus-visible{
+      outline:none;
+      box-shadow: 0 0 0 3px rgba(181,108,255,.22), var(--shadow2);
+    }
+
+    /* 主役ボタン（次へ） */
+    #btnNext{
+      border-color: rgba(181,108,255,.35);
+      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.12);
+    }
+
+    /* BGMボタン（小さめ・右寄せ） */
+    #btnBgm{
+      padding:10px 12px;
+      font-size:12px;
+      opacity:.92;
+      margin-left:auto;
+      min-height:40px;
+    }
+
+    input[type="file"]{
+      color:rgba(234,240,255,.86);
+      font-size:12px;
+    }
+
+    details{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--r2);
+      padding:10px 12px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    summary{
+      cursor:pointer;
+      color:rgba(234,240,255,.84);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    summary::before{
+      content:"▸";
+      display:inline-block;
+      margin-right:8px;
+      transform: translateY(-1px);
+      color:rgba(181,108,255,.85);
+    }
+    details[open] summary::before{content:"▾"}
+
+    .status{font-size:12px;color:var(--ok)}
+    .status.warn{color:var(--warn)}
+    .status.err{color:var(--err)}
+
+    code{
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.12);
+      padding:2px 8px;
+      border-radius:999px;
+      color:rgba(234,240,255,.88);
+    }
+
+    @media (max-width:560px){
+      .wrap{padding:14px}
+      h1{font-size:20px}
+      .big{font-size:19px}
+    }
   </style>
 </head>
 
-
 <body>
   <div class="wrap">
-    <h1 style="margin:6px 0 6px;">古文単語フラッシュカード</h1>
+    <h1 style="margin:6px 0 6px;">八東古文単語</h1>
     <div class="muted" style="margin-bottom:6px;">
       生徒向け：<b>初回は自動でデッキを読み込みます</b><br>
       データは端末内に保存されます。オフラインでも動作します（PWA）。
@@ -58,6 +247,7 @@
 
     <div class="row">
       <span id="status" class="status">起動中…</span>
+      <button id="btnBgm" type="button">BGM: OFF</button>
     </div>
 
     <!-- ✅UI整理：主操作 -->
@@ -68,7 +258,7 @@
 
     <!-- ✅UI整理：補助操作 -->
     <div class="row secondary">
-      <button id="btnShuffle">シャッフル</button>
+      <button id="btnShuffle">シャッフル（出題履歴リセット）</button>
       <button id="btnCopy">表裏をコピー</button>
     </div>
 
@@ -91,7 +281,7 @@
     <div class="sep"></div>
 
     <details>
-      <summary>メンテ用：操作しないこと</summary>
+      <summary>メンテ用；生徒は操作しない</summary>
       <div class="row" style="margin-top:10px;">
         <input id="file" type="file" accept=".csv,text/csv" />
         <button id="btnImport">CSVインポート（任意）</button>
@@ -105,23 +295,21 @@
     </details>
 
     <div class="muted" style="margin-top:12px;">
-      ヒント：スマホは「ホーム画面に追加」でアプリ風に使えます。
+      ヒント：スマホは「ホーム画面に追加」でアプリ風に使えます。<br>
+      操作：左スワイプ＝次へ／右スワイプ＝ひとつ前へ
     </div>
   </div>
 
 <script>
   // --- PWA register
   if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("./sw.js")
-      .then((reg) => {
-        // ✅ここが追加：更新を即チェックさせる
-        reg.update();
-      })
-      .catch(() => {});
-  });
-}
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./sw.js")
+        .then((reg) => { reg.update(); })
+        .catch(() => {});
+    });
+  }
 
   // --- Constants / keys
   const DEFAULT_DECK_URL = "./deck_default.csv";
@@ -135,14 +323,6 @@
 
   // ✅軽量SRS（苦手推定）用
   const KEY_STATS = "fc_stats_v1";
-  // stats shape:
-  // {
-  //   revealCount: { [idx]: number },
-  //   struggleScore: { [idx]: number },
-  //   lastShownAt: number|null,
-  //   lastRevealAt: number|null,
-  //   lastIndex: number|null
-  // }
 
   function loadStats() {
     try {
@@ -251,6 +431,39 @@
   let state = loadState();
   let currentIndex = -1;
 
+  // ===== Swipe/History navigation =====
+  const nav = { history: [], pos: -1 };
+
+  function pushHistory(i) {
+    if (!Number.isInteger(i) || i < 0) return;
+    if (nav.pos < nav.history.length - 1) {
+      nav.history = nav.history.slice(0, nav.pos + 1);
+    }
+    nav.history.push(i);
+    nav.pos = nav.history.length - 1;
+  }
+
+  function canGoBack() { return nav.pos > 0; }
+  function canGoForward() { return nav.pos < nav.history.length - 1; }
+
+  function goBack() {
+    if (!canGoBack()) return;
+    nav.pos -= 1;
+    showCard(nav.history[nav.pos]); // 今日見た枚数は増やさない
+    setStatus("ひとつ前へ戻りました");
+  }
+
+  function goForwardOrNew() {
+    if (canGoForward()) {
+      nav.pos += 1;
+      showCard(nav.history[nav.pos]);
+      setStatus("次（履歴）へ進みました");
+      return;
+    }
+    updateStruggleByDwell();
+    nextSmart();
+  }
+
   function ensureTodayCounter() {
     const t = todayKey();
     if (state.lastSeenDate !== t) {
@@ -270,7 +483,7 @@
   }
 
   function showCard(i) {
-    if (deck.length === 0) {
+    if (deck.length === 0 || i == null || i < 0 || i >= deck.length) {
       elPos.textContent = "-";
       elFront.textContent = "デッキが空です（既定デッキの読み込みに失敗した可能性があります）";
       elBack.style.display = "none";
@@ -291,6 +504,9 @@
     stats.lastRevealAt = null;
     stats.lastIndex = i;
     saveStats(stats);
+
+    // ✅履歴ナビ
+    pushHistory(i);
   }
 
   function resetSessionHistory() {
@@ -324,22 +540,20 @@
     const stats = loadStats();
     const scores = stats.struggleScore || {};
 
-    // 基本1、苦手スコアに応じて最大+6程度まで重くする（露骨すぎない）
     const weights = deck.map((_, i) => {
       const s = Number(scores[String(i)] ?? 0);
       const w = 1 + Math.min(6, Math.max(0, s));
       return w;
     });
 
-    // 直近回避（重み抽選でも露骨連続を避ける）
     const recentSet = new Set(deck.length >= 8 ? state.history : []);
-    let total = 0;
     const usable = weights.map((w, i) => {
       if (i === currentIndex) return 0;
-      if (recentSet.has(i)) return 0.2; // 少しだけ残す（詰まり救済のため完全ゼロにしない）
+      if (recentSet.has(i)) return 0.2;
       return w;
     });
-    total = usable.reduce((a,b)=>a+b,0);
+
+    const total = usable.reduce((a,b)=>a+b,0);
     if (total <= 0) return pickRandomAvoidingRecent();
 
     let r = Math.random() * total;
@@ -369,6 +583,7 @@
 
     showCard(i);
     updateKPI();
+    setStatus(useStruggle ? "次へ（苦手寄り）" : "次へ（ランダム）");
   }
 
   // ✅「次へ」直前に、滞在時間で苦手スコアを微調整
@@ -389,7 +604,6 @@
     }
 
     const dt = Date.now() - stats.lastRevealAt; // 裏→次へ の時間
-    // 目安：6秒以上→詰まり、1.5秒未満→軽快
     if (dt >= 6000) s += 1.0;
     else if (dt <= 1500) s -= 0.5;
 
@@ -402,7 +616,6 @@
     const rows = parseCSV(text);
     if (rows.length === 0) return [];
 
-    // detect header
     const header = rows[0].map(s => String(s ?? "").trim().toLowerCase());
     let start = 0, idxFront = 0, idxBack = 1;
 
@@ -436,7 +649,6 @@
   }
 
   async function ensureDefaultDeckLoaded() {
-    // 1) read meta (best-effort)
     let meta = null;
     try { meta = await fetchJSON(META_URL); } catch {}
 
@@ -476,9 +688,71 @@
     }
   }
 
-  // --- Buttons
+  // ===== BGM Toggle =====
+  const KEY_BGM_ON = "fc_bgm_on_v1";
+  const KEY_BGM_VOL = "fc_bgm_vol_v1";
+  const BGM_URL = "./bgm.mp3"; // ✅ここ：bgm.mp3 を index.html と同階層に置く
 
-  // ✅答えを見る：2回目以降の裏表示だけ苦手寄りに（初回は全員見るため）
+  let bgmAudio = null;
+
+  function isBgmOn(){
+    return localStorage.getItem(KEY_BGM_ON) === "1";
+  }
+  function setBgmOn(v){
+    localStorage.setItem(KEY_BGM_ON, v ? "1" : "0");
+  }
+  function getBgmVol(){
+    const v = Number(localStorage.getItem(KEY_BGM_VOL));
+    return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 0.15;
+  }
+
+  function updateBgmButton(){
+    const btn = document.getElementById("btnBgm");
+    if (!btn) return;
+    btn.textContent = isBgmOn() ? "BGM: ON" : "BGM: OFF";
+  }
+
+  async function startBgm(){
+    if (!bgmAudio) {
+      bgmAudio = new Audio(BGM_URL);
+      bgmAudio.loop = true;
+      bgmAudio.volume = getBgmVol();
+      bgmAudio.preload = "auto";
+    }
+    try {
+      await bgmAudio.play();
+      setBgmOn(true);
+      updateBgmButton();
+      setStatus("BGMを再生しました");
+    } catch {
+      setBgmOn(false);
+      updateBgmButton();
+      setStatus("BGMを再生できませんでした（端末の自動再生制限）", "warn");
+    }
+  }
+
+  function stopBgm(){
+    if (bgmAudio) bgmAudio.pause();
+    setBgmOn(false);
+    updateBgmButton();
+    setStatus("BGMを停止しました");
+  }
+
+  document.getElementById("btnBgm")?.addEventListener("click", () => {
+    if (isBgmOn()) stopBgm();
+    else startBgm();
+  });
+
+  (function initBgm(){
+    updateBgmButton();
+    // 初期OFFを徹底（自動再生規制を避ける）
+    if (isBgmOn()) {
+      setBgmOn(false);
+      updateBgmButton();
+    }
+  })();
+
+  // --- Buttons
   document.getElementById("btnReveal").onclick = () => {
     if (deck.length === 0) return;
 
@@ -497,7 +771,7 @@
       const newCount = (Number(rc[idx] ?? 0) + 1);
       rc[idx] = newCount;
 
-      // ✅2回目以降に裏を開く＝理解が固まっていない可能性が高い
+      // ✅2回目以降に裏を開く＝理解が固まっていない可能性
       if (newCount >= 2) {
         const s = Number(scores[idx] ?? 0);
         scores[idx] = clampScore(s + 1.0);
@@ -509,14 +783,16 @@
     }
   };
 
-  // ✅次へ：滞在時間で微調整→smart抽選
+  // ✅次へ：履歴があれば未来へ、なければ新規
   document.getElementById("btnNext").onclick = () => {
-    updateStruggleByDwell();
-    nextSmart();
+    goForwardOrNew();
   };
 
   document.getElementById("btnShuffle").onclick = () => {
     resetSessionHistory();
+    // 履歴ナビもリセット（“前へ”が混乱しない）
+    nav.history = [];
+    nav.pos = -1;
     nextSmart();
   };
 
@@ -546,6 +822,10 @@
     state.history = [];
     saveState(state);
 
+    // 履歴ナビも初期化
+    nav.history = [];
+    nav.pos = -1;
+
     updateKPI();
     showCard(0);
     setStatus(`インポート完了：${deck.length}枚（カスタム）`);
@@ -572,6 +852,10 @@
     saveDeck(deck);
     state.history = [];
     saveState(state);
+
+    nav.history = [];
+    nav.pos = -1;
+
     updateKPI();
     await ensureDefaultDeckLoaded();
   };
@@ -583,14 +867,64 @@
     localStorage.removeItem(KEY_UPDATED);
     localStorage.removeItem(KEY_SOURCE);
     localStorage.removeItem(KEY_VERSION);
-    localStorage.removeItem(KEY_STATS); // ✅追加：苦手推定も初期化
+    localStorage.removeItem(KEY_STATS);
+    localStorage.removeItem(KEY_BGM_ON);
+    localStorage.removeItem(KEY_BGM_VOL);
+
     deck = [];
     state = loadState();
     currentIndex = -1;
+
+    nav.history = [];
+    nav.pos = -1;
+
     updateKPI();
     showCard(-1);
     setStatus("初期化しました", "warn");
   };
+
+  // ===== Swipe handler =====
+  (function attachSwipe(){
+    const cardEl = document.querySelector(".card");
+    if (!cardEl) return;
+
+    let sx = 0, sy = 0, t0 = 0, tracking = false;
+
+    const THRESH_X = 55;
+    const THRESH_Y = 60;
+    const MAX_MS   = 650;
+
+    // 縦スクロールを許可しつつ横スワイプを検出しやすく
+    cardEl.style.touchAction = "pan-y";
+
+    cardEl.addEventListener("touchstart", (e) => {
+      if (!e.touches?.length) return;
+      const p = e.touches[0];
+      sx = p.clientX; sy = p.clientY; t0 = Date.now();
+      tracking = true;
+    }, { passive: true });
+
+    cardEl.addEventListener("touchend", (e) => {
+      if (!tracking) return;
+      tracking = false;
+
+      const p = e.changedTouches?.[0];
+      if (!p) return;
+
+      const dx = p.clientX - sx;
+      const dy = p.clientY - sy;
+      const dt = Date.now() - t0;
+
+      if (Math.abs(dy) > THRESH_Y) return;
+      if (dt > MAX_MS) return;
+
+      if (dx <= -THRESH_X) {
+        goForwardOrNew(); // 左：次へ
+      } else if (dx >= THRESH_X) {
+        goBack();         // 右：前へ
+      }
+    }, { passive: true });
+  })();
 
   // --- Init
   (async () => {
