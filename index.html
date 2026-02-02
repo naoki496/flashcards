@@ -2,1236 +2,1081 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>古文単語</title>
-  <meta name="theme-color" content="#070A10" />
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07080b" />
+  <title>八東古文単語</title>
 
   <style>
     :root{
-      --bg0:#070A10;
-      --bg1:#0B1220;
+      --bg:#07080b;
+
+      /* ✅ Violet theme */
+      --accent:#B56CFF;     /* violet core */
+      --accent2:#62d6ff;    /* cyan accent */
+      --ok:#5cffb7;
+      --danger:#ff5c7a;
+
       --panel:rgba(255,255,255,.06);
-      --panel2:rgba(255,255,255,.08);
-      --line:rgba(255,255,255,.12);
-      --line2:rgba(255,255,255,.18);
-      --text:#EAF0FF;
-      --muted:rgba(234,240,255,.72);
+      --panel2:rgba(255,255,255,.10);
+      --border:rgba(255,255,255,.14);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.62);
 
-      /* ✅ Violet base */
-      --accent:#B56CFF;
-      --accent2:#A7D8FF; /* ✅青銀系 */
+      --radius:18px;
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+      --minTap:44px;
+      --maxW:980px;
 
-      --warn:#FFCC66;
-      --err:#FF6B7A;
-      --ok:#7CFFB2;
-
-      --r:16px;
-      --r2:14px;
-      --shadow: 0 16px 44px rgba(0,0,0,.55);
-      --shadow2: 0 10px 24px rgba(0,0,0,.45);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+              "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",
+              "Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-
+    html,body{height:100%;}
     body{
       margin:0;
       color:var(--text);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+      font-family:var(--sans);
       background:
-        radial-gradient(900px 520px at 20% 12%, rgba(181,108,255,.22), transparent 55%),
-        radial-gradient(800px 520px at 82% 18%, rgba(167,216,255,.14), transparent 60%),
-        radial-gradient(900px 620px at 60% 85%, rgba(181,108,255,.10), transparent 58%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
+        radial-gradient(1200px 600px at 18% 12%, rgba(181,108,255,.22), transparent 60%),
+        radial-gradient(980px 560px at 86% 16%, rgba(98,214,255,.14), transparent 62%),
+        radial-gradient(900px 520px at 60% 110%, rgba(92,255,183,.08), transparent 60%),
+        linear-gradient(180deg, #06070a, #04050a 55%, #020309);
       overflow-x:hidden;
     }
 
-    a{color:rgba(181,108,255,.92)}
-    a:hover{color:rgba(181,108,255,1)}
-
     .wrap{
-      max-width:860px;
+      max-width:var(--maxW);
       margin:0 auto;
-      padding:16px;
+      padding:18px 14px 28px;
     }
 
-    /* ✅ヘッダー行：タイトル＋BGM */
-    .head{
+    .topbar{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:10px;
-      margin:6px 0 2px;
+      gap:12px;
+      margin-bottom:14px;
     }
-
-    h1{
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .brand h1{
       margin:0;
-      font-size:22px;
-      letter-spacing:.06em;
-      line-height:1.25;
-      text-shadow: 0 0 18px rgba(181,108,255,.18);
-    }
-
-    .muted{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .row{
+      font-size:20px;
+      letter-spacing:.02em;
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:12px 0;
       align-items:center;
-    }
-
-    /* ✅ UI整理：主操作／補助 */
-    .row.primary button{
-      flex:1 1 calc(50% - 10px);
-      font-size:16px;
-    }
-    .row.secondary button{
-      flex:1 1 calc(50% - 10px);
-      font-size:13px;
-      opacity:.80;
-    }
-
-    .kpi{
-      display:flex;
       gap:10px;
-      flex-wrap:wrap;
+    }
+    .brandMark{
+      width:10px;height:10px;border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 18px rgba(181,108,255,.55);
+      flex:0 0 auto;
     }
 
-    .pill{
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:12px;
-      color:rgba(234,240,255,.86);
-      box-shadow: 0 8px 18px rgba(0,0,0,.18);
+    .glass{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
 
-    .sep{
-      height:1px;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
-      margin:14px 0;
+    .kpis{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:99px;
+      background:var(--accent);
+      box-shadow:0 0 16px rgba(181,108,255,.55);
+    }
+    .dot.ok{ background:var(--ok); box-shadow:0 0 16px rgba(92,255,183,.35); }
+
+    .main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
     }
 
-    /* ===== Card (Swipe target) ===== */
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:var(--r);
-      padding:18px;
-      min-height:180px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      padding:16px 14px;
       position:relative;
       overflow:hidden;
-
-      /* ✅ スワイプ誤爆を抑える：縦スクロールはブラウザに任せる */
-      touch-action: pan-y;
-      user-select: none;
-      -webkit-user-select: none;
     }
 
     .card::before{
       content:"";
       position:absolute;
       inset:-2px;
+      border-radius:inherit;
       background:
-        radial-gradient(520px 280px at 18% 10%, rgba(181,108,255,.16), transparent 60%),
-        radial-gradient(560px 340px at 88% 20%, rgba(167,216,255,.10), transparent 62%);
+        radial-gradient(520px 220px at 30% 0%, rgba(181,108,255,.16), transparent 55%),
+        radial-gradient(420px 220px at 90% 10%, rgba(98,214,255,.12), transparent 55%);
       pointer-events:none;
+      opacity:.95;
     }
+    .card > *{ position:relative; }
 
-    .card > *{position:relative}
-
-    .big{
-      font-size:20px;
-      line-height:1.45;
-      white-space:pre-wrap;
-    }
-
-    #pos{
-      color:rgba(234,240,255,.72);
+    .cardHeader{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
     }
 
     button{
       appearance:none;
-      -webkit-appearance:none;
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      color:rgba(234,240,255,.92);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:12px;
-      padding:12px 14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:14px;
+      min-height:var(--minTap);
+      padding:10px 14px;
+      font-weight:700;
+      letter-spacing:.01em;
       cursor:pointer;
-      box-shadow: var(--shadow2);
-      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease, opacity .12s ease;
-      min-height:44px;
+      transition: transform .06s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
       touch-action:manipulation;
     }
-
     button:hover{
-      background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08));
-      border-color: rgba(181,108,255,.28);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.10);
+      border-color:rgba(181,108,255,.45);
+      box-shadow:0 0 0 3px rgba(181,108,255,.16), 0 18px 50px rgba(0,0,0,.25);
+      background:rgba(181,108,255,.06);
     }
-
     button:active{ transform: translateY(1px); }
 
-    button:focus-visible{
-      outline:none;
-      box-shadow: 0 0 0 3px rgba(181,108,255,.22), var(--shadow2);
+    .primaryBtn{
+      background:linear-gradient(180deg, rgba(181,108,255,.20), rgba(255,255,255,.06));
+      border-color:rgba(181,108,255,.55);
+      box-shadow:0 0 0 2px rgba(181,108,255,.16);
+    }
+    .secondaryBtn{ background:rgba(255,255,255,.05); }
+    .ghostBtn{
+      background:transparent;
+      border-style:dashed;
+      color:rgba(255,255,255,.75);
     }
 
-    /* 主役ボタン（次へ） */
-    #btnNext{
-      border-color: rgba(181,108,255,.35);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(181,108,255,.12);
+    .bgmBtn[data-on="true"]{
+      border-color:rgba(92,255,183,.55);
+      background:rgba(92,255,183,.10);
+      box-shadow:0 0 0 2px rgba(92,255,183,.14);
     }
 
-    input[type="file"]{
-      color:rgba(234,240,255,.86);
-      font-size:12px;
+    .miniBtn{
+      min-width:44px;
+      min-height:44px;
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:1;
     }
 
-    details{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:var(--r2);
-      padding:10px 12px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+    .fc{
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      overflow:hidden;
+      position:relative;
     }
 
-    summary{
-      cursor:pointer;
-      color:rgba(234,240,255,.84);
-      list-style:none;
-    }
-    summary::-webkit-details-marker{display:none}
-    summary::before{
-      content:"▸";
-      display:inline-block;
-      margin-right:8px;
-      transform: translateY(-1px);
-      color:rgba(181,108,255,.85);
-    }
-    details[open] summary::before{content:"▾"}
-
-    .status{font-size:12px;color:var(--ok)}
-    .status.warn{color:var(--warn)}
-    .status.err{color:var(--err)}
-
-    code{
-      background:rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.12);
-      padding:2px 8px;
-      border-radius:999px;
-      color:rgba(234,240,255,.88);
-    }
-
-    /* ===== Swipe feedback ===== */
-    .card.is-dragging{
-      transition:none !important;
-      cursor:grabbing;
-    }
-
-    /* ✅青銀パルス（操作成功時） */
-    @keyframes pulseBlueSilver {
-      0%   { box-shadow: var(--shadow); }
-      35%  { box-shadow: 0 18px 50px rgba(0,0,0,.55), 0 0 0 2px rgba(167,216,255,.18), 0 0 36px rgba(167,216,255,.22); }
-      100% { box-shadow: var(--shadow); }
-    }
-    .card.pulse{
-      animation: pulseBlueSilver 520ms ease-out;
-    }
-
-    /* ===== Swipe hints (visual affordance) ===== */
-    .swipe-hint{
+    .fcTop{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
       display:flex;
       justify-content:space-between;
       align-items:center;
       gap:10px;
-      margin:10px 2px 0;
-      color:rgba(234,240,255,.72);
+    }
+    .status{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .status strong{ color:rgba(255,255,255,.86); }
+
+    .navArrows{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .fcBody{
+      padding:16px 14px 18px;
+      min-height:175px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .front{
+      font-size:20px;
+      letter-spacing:.02em;
+      line-height:1.42;
+      white-space:pre-wrap;
+    }
+    .back{
+      font-size:16px;
+      color:rgba(255,255,255,.82);
+      line-height:1.60;
+      white-space:pre-wrap;
+      padding-top:10px;
+      border-top:1px dashed rgba(255,255,255,.14);
+      display:none;
+    }
+    .back.show{ display:block; }
+
+    .btnRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    /* Swipe affordance */
+    .swipeAfford{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
+      color:var(--muted);
       font-size:12px;
       user-select:none;
-      -webkit-user-select:none;
     }
-    .swipe-hint .cap{
+    .affSide{
       display:flex;
       align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.05);
+      gap:10px;
+      min-width:0;
+    }
+    .affPills{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .affPill{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:4px 8px;
       border-radius:999px;
-      box-shadow: 0 8px 18px rgba(0,0,0,.18);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
+      color:rgba(255,255,255,.78);
       white-space:nowrap;
     }
-    .swipe-hint .cap b{ color: rgba(167,216,255,.95); font-weight:800; }
-    .swipe-hint .cap .arrow{
-      font-weight:900;
-      color:rgba(167,216,255,.92);
-      text-shadow: 0 0 14px rgba(167,216,255,.18);
-    }
 
-    /* カード左右のうっすら矢印（説明なしでも気づく） */
-    .card .edge{
+    .chev{
+      width:30px;
+      height:18px;
+      display:inline-block;
+      position:relative;
+      opacity:.80;
+      filter: drop-shadow(0 0 10px rgba(181,108,255,.12));
+    }
+    .chev::before, .chev::after{
+      content:"";
       position:absolute;
       top:50%;
-      transform:translateY(-50%);
-      width:42px;
-      height:42px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.20);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:rgba(167,216,255,.75);
+      width:10px;
+      height:10px;
+      border-right:2px solid rgba(255,255,255,.75);
+      border-bottom:2px solid rgba(255,255,255,.75);
+      transform: translateY(-50%) rotate(135deg);
+      opacity:.75;
+      animation: nudgeL 1.4s ease-in-out infinite;
+    }
+    .chev::after{
+      left:12px;
+      opacity:.42;
+      animation-delay:.14s;
+    }
+    .chev.left::before, .chev.left::after{
+      transform: translateY(-50%) rotate(315deg);
+      animation-name:nudgeR;
+    }
+
+    @keyframes nudgeL{
+      0%{ transform: translate(0, -50%) rotate(135deg); opacity:.55; }
+      50%{ transform: translate(-6px, -50%) rotate(135deg); opacity:.85; }
+      100%{ transform: translate(0, -50%) rotate(135deg); opacity:.55; }
+    }
+    @keyframes nudgeR{
+      0%{ transform: translate(0, -50%) rotate(315deg); opacity:.55; }
+      50%{ transform: translate(6px, -50%) rotate(315deg); opacity:.85; }
+      100%{ transform: translate(0, -50%) rotate(315deg); opacity:.55; }
+    }
+
+    .edgeGlow{
       pointer-events:none;
-      opacity:.35;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition: opacity .15s ease;
     }
-    .card .edge.left{ left:10px; }
-    .card .edge.right{ right:10px; }
-    .card .edge span{
-      font-size:20px;
-      font-weight:900;
+    .edgeGlow.on{ opacity:1; }
+    .edgeGlow.left{
+      background: radial-gradient(520px 220px at 0% 50%, rgba(181,108,255,.22), transparent 60%);
     }
-
-    /* 初回だけ「ふわっ」と気づかせる */
-    @keyframes hintBreathe {
-      0%,100% { opacity: .28; transform: translateY(-50%) scale(1); }
-      50%     { opacity: .55; transform: translateY(-50%) scale(1.06); }
-    }
-    .card.hint-once .edge{
-      animation: hintBreathe 1.2s ease-in-out 2;
+    .edgeGlow.right{
+      background: radial-gradient(520px 220px at 100% 50%, rgba(181,108,255,.22), transparent 60%);
     }
 
-    /* ===== BGM button ===== */
-    .bgm-btn{
-      flex: 0 0 auto;
-      min-width: 130px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(167,216,255,.22);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      box-shadow: var(--shadow2);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-weight:800;
-      font-size:13px;
-      color:rgba(234,240,255,.90);
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.66);
+      color:rgba(255,255,255,.9);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:12.5px;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index:9999;
+      max-width:min(92vw, 680px);
+      text-align:center;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-2px);
+    }
+
+    .swipeArea{ touch-action: pan-y; }
+
+    .smallNote{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.55;
+      margin-top:8px;
+    }
+
+    details{ margin-top:12px; }
+    summary{
       cursor:pointer;
+      color:rgba(255,255,255,.85);
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
       user-select:none;
-      -webkit-user-select:none;
-      transition: transform .08s ease, border-color .12s ease, box-shadow .12s ease, opacity .12s ease;
-      height:44px;
-      white-space:nowrap;
+      list-style:none;
     }
-    .bgm-btn:hover{
-      border-color: rgba(167,216,255,.38);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(167,216,255,.10);
-    }
-    .bgm-btn:active{ transform: translateY(1px); }
-    .bgm-btn.on{
-      border-color: rgba(167,216,255,.55);
-      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(167,216,255,.14), 0 0 18px rgba(167,216,255,.18);
-    }
-    .bgm-btn small{
-      font-size:11px;
-      opacity:.82;
-      font-weight:800;
-      letter-spacing:.02em;
+    summary::-webkit-details-marker{ display:none; }
+
+    .maint{
+      padding:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.55;
     }
 
-    @media (max-width:560px){
-      .wrap{padding:14px}
-      h1{font-size:20px}
-      .big{font-size:19px}
-      .bgm-btn{ min-width: 118px; }
+    input[type="file"]{
+      display:block;
+      width:100%;
+      margin-top:10px;
+      color:rgba(255,255,255,.84);
     }
+
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (min-width: 740px){
+      .row2{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .mono{
+      font-family:var(--mono);
+      font-size:12px;
+      color:rgba(255,255,255,.80);
+    }
+    .muted{ color:var(--muted); }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="wrap swipeArea" id="swipeRoot">
+    <div class="topbar">
+      <div class="brand">
+        <h1><span class="brandMark"></span>八東古文単語</h1>
+      </div>
 
-    <div class="head">
-      <div>
-        <h1>八東古文単語</h1>
-        <div class="muted" style="margin-top:4px;">
-          生徒向け：<b>初回は自動でデッキを読み込みます</b><br>
-          データは端末内に保存されます。オフラインでも動作します（PWA）。
+      <div class="kpis">
+        <div class="pill"><span class="dot"></span><span>総数</span><strong id="kpiTotal">-</strong></div>
+        <div class="pill"><span class="dot ok"></span><span>今日</span><strong id="kpiToday">-</strong></div>
+      </div>
+    </div>
+
+    <div class="main">
+      <section class="glass card" id="uiCardPanel">
+        <div class="cardHeader">
+          <button class="secondaryBtn bgmBtn" id="btnBgm" data-on="false" type="button">BGM: OFF</button>
+          <audio id="bgmAudio" preload="none" loop>
+            <source src="./assets/bgm/study.mp3" type="audio/mpeg" />
+          </audio>
         </div>
-      </div>
 
-      <!-- ✅BGM button (initial OFF) -->
-      <button id="btnBgm" class="bgm-btn" type="button" aria-pressed="false" title="BGM（初期OFF）">
-        <span id="bgmIcon">♪</span>
-        <span id="bgmLabel">BGM</span>
-        <small id="bgmState">OFF</small>
-      </button>
-    </div>
+        <div class="fc" id="cardBox" aria-live="polite">
+          <div class="edgeGlow left" id="glowLeft"></div>
+          <div class="edgeGlow right" id="glowRight"></div>
 
-    <div class="row">
-      <span id="status" class="status">起動中…</span>
-    </div>
+          <div class="fcTop">
+            <div class="status" id="statusText">
+              <strong id="idxText">-</strong>
+              <span style="opacity:.45;">/</span>
+              <span id="totalText">-</span>
+              <span style="opacity:.45;">・</span>
+              <span id="seenText">seen: -</span>
+            </div>
+            <div class="navArrows">
+              <button class="secondaryBtn miniBtn" id="btnPrev" type="button" aria-label="前へ戻る">←</button>
+              <button class="secondaryBtn miniBtn" id="btnNext" type="button" aria-label="次へ">→</button>
+            </div>
+          </div>
 
-    <!-- ✅UI整理：主操作 -->
-    <div class="row primary">
-      <button id="btnNext">次へ（ランダム）</button>
-      <button id="btnReveal">答えを見る</button>
-    </div>
+          <div class="fcBody">
+            <div class="front" id="frontText">読み込み中…</div>
+            <div class="back" id="backText"></div>
 
-    <!-- ✅UI整理：補助操作 -->
-    <div class="row secondary">
-      <button id="btnShuffle">シャッフル（出題履歴リセット）</button>
-      <button id="btnCopy">表裏をコピー</button>
-    </div>
+            <div class="btnRow">
+              <button class="primaryBtn" id="btnToggle" type="button">答えを見る</button>
+              <button class="secondaryBtn" id="btnShuffle" type="button">シャッフル</button>
+              <button class="ghostBtn" id="btnResetToday" type="button">今日カウントをリセット</button>
+            </div>
 
-    <div class="kpi">
-      <div class="pill">カード枚数：<span id="kCards">0</span></div>
-      <div class="pill">今日見た枚数：<span id="kToday">0</span></div>
-      <div class="pill">デッキ：<span id="kSource">-</span></div>
-      <div class="pill">最終更新：<span id="kUpdated">-</span></div>
-    </div>
+            <div class="swipeAfford" aria-label="swipe affordance">
+              <div class="affSide">
+                <span class="chev left" aria-hidden="true"></span>
+                <div class="affPills">
+                  <span class="affPill">←</span>
+                  <span class="muted">戻る</span>
+                </div>
+              </div>
 
-    <div class="sep"></div>
+              <div class="affSide" style="justify-content:center; flex:1;">
+                <span class="muted" style="white-space:nowrap;">左右スワイプでも操作できます</span>
+              </div>
 
-    <!-- ✅ここがスワイプ対象 -->
-    <div class="card hint-once" id="card">
-      <div class="edge left" aria-hidden="true"><span>‹</span></div>
-      <div class="edge right" aria-hidden="true"><span>›</span></div>
+              <div class="affSide" style="justify-content:flex-end;">
+                <div class="affPills">
+                  <span class="muted">次へ</span>
+                  <span class="affPill">→</span>
+                </div>
+                <span class="chev" aria-hidden="true"></span>
+              </div>
+            </div>
 
-      <div class="muted" id="pos">-</div>
-      <div class="big" id="front" style="margin-top:10px;">読み込み中…</div>
-      <div class="sep"></div>
-      <div class="big" id="back" style="display:none;"></div>
-    </div>
+            <div class="smallNote">
+              ※BGMはボタン操作後に再生できます（自動再生はしません）
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <!-- ✅スワイプの意味を明示 -->
-    <div class="swipe-hint">
-      <div class="cap"><span class="arrow">←</span> 右スワイプで <b>戻る</b></div>
-      <div class="cap"><b>次へ</b> は左スワイプ <span class="arrow">→</span></div>
-    </div>
+      <details>
+        <summary>メンテ用（通常は生徒は触らない）</summary>
+        <div class="maint">
+          <div>
+            <strong>UIが変わらない／更新が反映されない：</strong><br>
+            PWAキャッシュの可能性が高いです。SW更新 → ハードリロード → サイトデータ削除で確認してください。
+          </div>
 
-    <div class="sep"></div>
+          <div class="row2">
+            <div class="glass" style="padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);box-shadow:none;">
+              <div style="font-weight:700;color:rgba(255,255,255,.86);">CSVを手動インポート</div>
+              <div class="smallNote">列名は柔軟に解釈します（front/back、question/answer、term/meaning等）。</div>
+              <input type="file" id="fileCsv" accept=".csv,text/csv" />
+              <div class="btnRow">
+                <button class="secondaryBtn" id="btnLoadDefault" type="button">デフォルトCSVを再読込</button>
+              </div>
+            </div>
 
-    <details>
-      <summary>メンテ用；生徒は操作しない</summary>
-      <div class="row" style="margin-top:10px;">
-        <input id="file" type="file" accept=".csv,text/csv" />
-        <button id="btnImport">CSVインポート（任意）</button>
-        <button id="btnExport">現在のデッキをCSVで書き出し</button>
-        <button id="btnResetDefault">既定デッキに戻す</button>
-        <button id="btnResetAll">端末内データ初期化</button>
-      </div>
-      <div class="muted">
-        CSV形式（推奨）：<code>front,back</code>（1行目ヘッダ）。
-      </div>
-    </details>
-
-    <div class="muted" style="margin-top:12px;">
-      ヒント：スマホは「ホーム画面に追加」でアプリ風に使えます。
+            <div class="glass" style="padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);box-shadow:none;">
+              <div style="font-weight:700;color:rgba(255,255,255,.86);">データ初期化</div>
+              <div class="smallNote">
+                進捗（見た記録）と今日カウントを初期化します。<br>
+                ※学習用端末を使い回す場合のみ。
+              </div>
+              <div class="btnRow">
+                <button class="ghostBtn" id="btnResetAll" type="button">全て初期化</button>
+              </div>
+              <div class="smallNote mono">Storage key prefix: <span id="storageKeyHint"></span></div>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
 
-  <!-- ✅BGM audio (file path) -->
-  <audio id="bgm" preload="auto" loop playsinline>
-    <source src="./assets/bgm/study.mp3" type="audio/mpeg">
-  </audio>
+  <div class="toast" id="toast"></div>
 
-<script>
-  // --- PWA register（更新を即チェック）
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("./sw.js")
-        .then((reg) => { reg.update(); })
-        .catch(() => {});
-    });
-  }
+  <script>
+    /********************
+     * 基本設定（古文単語）
+     ********************/
+    const STORAGE_PREFIX = "hattoKobunFlash.v1";
+    const KEY_STATE      = STORAGE_PREFIX + ".state";
+    const KEY_SEEN       = STORAGE_PREFIX + ".seenIds";
+    const KEY_TODAY      = STORAGE_PREFIX + ".today";
+    const KEY_TODAY_DATE = STORAGE_PREFIX + ".todayDate";
 
-  // --- Constants / keys
-  const DEFAULT_DECK_URL = "./deck_default.csv";
-  const META_URL = "./deck_meta.json";
+    // ✅ デフォルト読み込み：deck_default.csv 固定
+    const DEFAULT_CSV_CANDIDATES = [
+      "./deck_default.csv",
+      "./assets/deck_default.csv",
+    ];
 
-  const KEY_DECK = "fc_deck_v2";
-  const KEY_STATE = "fc_state_v2";
-  const KEY_UPDATED = "fc_updated_v2";
-  const KEY_SOURCE = "fc_source_v2"; // "default" | "custom"
-  const KEY_VERSION = "fc_deck_version_v2"; // meta.version when default
+    // 内部保持（UIには出さない）
+    let internalCsvUsed = "deck_default.csv";
+    let internalUpdatedAt = "";
 
-  // ✅軽量SRS（苦手推定）用
-  const KEY_STATS = "fc_stats_v1";
+    const $ = (id)=>document.getElementById(id);
 
-  // ✅BGM保存キー（端末内にON/OFF記録）
-  const KEY_BGM = "fc_bgm_v1"; // "on" | "off"
+    const elFront = $("frontText");
+    const elBack  = $("backText");
+    const elIdx   = $("idxText");
+    const elTotal = $("totalText");
+    const elSeen  = $("seenText");
+    const elKpiTotal = $("kpiTotal");
+    const elKpiToday = $("kpiToday");
+    const elToast = $("toast");
 
-  function loadStats() {
-    try {
-      return JSON.parse(localStorage.getItem(KEY_STATS)) ?? {
-        revealCount: {},
-        struggleScore: {},
-        lastShownAt: null,
-        lastRevealAt: null,
-        lastIndex: null,
-        lastIsRevisit: false
-      };
-    } catch {
-      return { revealCount:{}, struggleScore:{}, lastShownAt:null, lastRevealAt:null, lastIndex:null, lastIsRevisit:false };
+    const btnPrev = $("btnPrev");
+    const btnNext = $("btnNext");
+    const btnToggle = $("btnToggle");
+    const btnShuffle = $("btnShuffle");
+    const btnResetToday = $("btnResetToday");
+    const btnResetAll = $("btnResetAll");
+    const btnLoadDefault = $("btnLoadDefault");
+    const fileCsv = $("fileCsv");
+
+    const btnBgm = $("btnBgm");
+    const audioBgm = $("bgmAudio");
+
+    const glowLeft = $("glowLeft");
+    const glowRight = $("glowRight");
+
+    $("storageKeyHint").textContent = STORAGE_PREFIX;
+
+    let cards = [];     // {id, front, back}
+    let order = [];     // indices
+    let idx = 0;        // order index
+    let showBack = false;
+
+    function todayKey(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
     }
-  }
-  function saveStats(s) { localStorage.setItem(KEY_STATS, JSON.stringify(s)); }
-  function clampScore(x) {
-    if (!Number.isFinite(x)) return 0;
-    return Math.max(0, Math.min(20, x));
-  }
 
-  // --- DOM
-  const elCard  = document.getElementById("card");
-  const elFront = document.getElementById("front");
-  const elBack  = document.getElementById("back");
-  const elPos   = document.getElementById("pos");
-  const elStatus= document.getElementById("status");
+    function showToast(msg){
+      if(!elToast) return;
+      elToast.textContent = msg;
+      elToast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=>elToast.classList.remove("show"), 1100);
+    }
 
-  const kCards  = document.getElementById("kCards");
-  const kToday  = document.getElementById("kToday");
-  const kUpdated= document.getElementById("kUpdated");
-  const kSource = document.getElementById("kSource");
+    function flashGlow(dir){
+      const el = dir === "left" ? glowLeft : glowRight;
+      if(!el) return;
+      el.classList.add("on");
+      clearTimeout(flashGlow._t);
+      flashGlow._t = setTimeout(()=>el.classList.remove("on"), 180);
+    }
 
-  // --- BGM DOM
-  const elBgm = document.getElementById("bgm");
-  const btnBgm = document.getElementById("btnBgm");
-  const bgmIcon = document.getElementById("bgmIcon");
-  const bgmState = document.getElementById("bgmState");
+    function loadJSON(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch{
+        return fallback;
+      }
+    }
+    function saveJSON(key, val){
+      localStorage.setItem(key, JSON.stringify(val));
+    }
 
-  // --- Minimal CSV parser (quoted fields, commas, CRLF)
-  function parseCSV(text) {
-    const rows = [];
-    let i = 0, field = "", row = [], inQuotes = false;
-    while (i < text.length) {
-      const c = text[i];
-      if (inQuotes) {
-        if (c === '"') {
-          if (text[i+1] === '"') { field += '"'; i += 2; continue; }
-          inQuotes = false; i++; continue;
+    function getSeenSet(){
+      const arr = loadJSON(KEY_SEEN, []);
+      return new Set(arr);
+    }
+    function setSeenSet(set){
+      saveJSON(KEY_SEEN, Array.from(set));
+    }
+
+    function getTodayCount(){
+      const t = todayKey();
+      const savedDate = localStorage.getItem(KEY_TODAY_DATE);
+      if(savedDate !== t){
+        localStorage.setItem(KEY_TODAY_DATE, t);
+        localStorage.setItem(KEY_TODAY, "0");
+        return 0;
+      }
+      return Number(localStorage.getItem(KEY_TODAY) || "0") || 0;
+    }
+    function incTodayCount(){
+      const c = getTodayCount() + 1;
+      localStorage.setItem(KEY_TODAY, String(c));
+      return c;
+    }
+    function resetTodayCount(){
+      localStorage.setItem(KEY_TODAY_DATE, todayKey());
+      localStorage.setItem(KEY_TODAY, "0");
+      return 0;
+    }
+
+    function persistState(){
+      saveJSON(KEY_STATE, { idx, order, showBack });
+    }
+    function restoreState(){
+      const st = loadJSON(KEY_STATE, null);
+      if(!st) return;
+      if(Array.isArray(st.order)) order = st.order;
+      if(Number.isInteger(st.idx)) idx = st.idx;
+      if(typeof st.showBack === "boolean") showBack = st.showBack;
+    }
+
+    function normalizeHeader(h){
+      return String(h||"").trim().toLowerCase()
+        .replace(/\s+/g,"")
+        .replace(/[＿_]/g,"_");
+    }
+
+    function parseCSV(text){
+      const rows = [];
+      let i=0, field="", row=[], inQuotes=false;
+
+      while(i < text.length){
+        const c = text[i];
+
+        if(inQuotes){
+          if(c === '"'){
+            if(text[i+1] === '"'){ field += '"'; i += 2; continue; }
+            inQuotes = false; i++; continue;
+          }
+          field += c; i++; continue;
+        }else{
+          if(c === '"'){ inQuotes = true; i++; continue; }
+          if(c === ','){ row.push(field); field=""; i++; continue; }
+          if(c === '\n'){
+            row.push(field); field="";
+            if(row.some(v => String(v).trim() !== "")) rows.push(row);
+            row = [];
+            i++; continue;
+          }
+          if(c === '\r'){ i++; continue; }
+          field += c; i++; continue;
         }
-        field += c; i++; continue;
-      } else {
-        if (c === '"') { inQuotes = true; i++; continue; }
-        if (c === ',') { row.push(field); field = ""; i++; continue; }
-        if (c === '\n') { row.push(field); rows.push(row); row = []; field = ""; i++; continue; }
-        if (c === '\r') { i++; continue; }
-        field += c; i++; continue;
+      }
+      row.push(field);
+      if(row.some(v => String(v).trim() !== "")) rows.push(row);
+      if(rows.length === 0) return [];
+
+      const header = rows[0].map(normalizeHeader);
+      const dataRows = rows.slice(1);
+
+      const frontKeys = new Set(["front","question","q","term","word","表","おもて","問題","語","語句"]);
+      const backKeys  = new Set(["back","answer","a","meaning","definition","裏","うら","解答","答え","意味","説明","訳"]);
+
+      const frontIdx = header.findIndex(h => frontKeys.has(h));
+      const backIdx  = header.findIndex(h => backKeys.has(h));
+      const useHeader = (frontIdx !== -1 || backIdx !== -1);
+
+      const out = [];
+      for(let r=0; r<dataRows.length; r++){
+        const cols = dataRows[r];
+        const f = useHeader ? (cols[frontIdx] ?? "") : (cols[0] ?? "");
+        const b = useHeader ? (cols[backIdx]  ?? "") : (cols[1] ?? "");
+        const front = String(f ?? "").trim();
+        const back  = String(b ?? "").trim();
+        if(!front && !back) continue;
+        out.push({ front, back });
+      }
+      return out;
+    }
+
+    function buildCards(parsed){
+      const seen = new Map();
+      return parsed.map((p)=>{
+        const base = (p.front + "||" + p.back).trim();
+        const n = (seen.get(base) || 0) + 1;
+        seen.set(base, n);
+        return {
+          id: n === 1 ? base : `${base}#${n}`,
+          front: p.front,
+          back: p.back
+        };
+      });
+    }
+
+    async function fetchText(url){
+      const res = await fetch(url, { cache: "no-store" });
+      if(!res.ok) throw new Error(`fetch failed: ${url}`);
+      return await res.text();
+    }
+
+    async function loadDefaultCsvText(){
+      let lastErr = null;
+      for(const url of DEFAULT_CSV_CANDIDATES){
+        try{
+          const text = await fetchText(url);
+          return { text, used: url };
+        }catch(e){
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("deck_default.csv not found");
+    }
+
+    function clampIndex(){
+      if(order.length === 0){ idx = 0; return; }
+      if(idx < 0) idx = 0;
+      if(idx >= order.length) idx = order.length - 1;
+    }
+
+    function currentCard(){
+      if(cards.length === 0 || order.length === 0) return null;
+      const ci = order[idx];
+      return cards[ci] || null;
+    }
+
+    function updateKpis(){
+      elKpiTotal.textContent = String(cards.length || 0);
+      elTotal.textContent = String(cards.length || 0);
+      elKpiToday.textContent = String(getTodayCount());
+      elSeen.textContent = `seen: ${getSeenSet().size}`;
+    }
+
+    function render(){
+      updateKpis();
+
+      const c = currentCard();
+      if(!c){
+        elFront.textContent = "データがありません（CSVを確認してください）";
+        elBack.textContent = "";
+        elBack.classList.remove("show");
+        elIdx.textContent = "-";
+        btnToggle.disabled = true;
+        btnPrev.disabled = true;
+        btnNext.disabled = true;
+        return;
+      }
+
+      btnToggle.disabled = false;
+      btnPrev.disabled = (idx <= 0);
+      btnNext.disabled = (idx >= order.length - 1);
+
+      elIdx.textContent = String(idx + 1);
+      elFront.textContent = c.front || "(表が空です)";
+      elBack.textContent = c.back || "(裏が空です)";
+
+      if(showBack){
+        elBack.classList.add("show");
+        btnToggle.textContent = "答えを隠す";
+      }else{
+        elBack.classList.remove("show");
+        btnToggle.textContent = "答えを見る";
       }
     }
-    row.push(field);
-    if (row.length > 1 || row[0].trim() !== "") rows.push(row);
-    return rows;
-  }
 
-  function toCSV(rows) {
-    const esc = (s) => {
-      s = String(s ?? "");
-      const need = /[",\n\r]/.test(s);
-      s = s.replace(/"/g, '""');
-      return need ? `"${s}"` : s;
-    };
-    return rows.map(r => r.map(esc).join(",")).join("\n");
-  }
-
-  function setStatus(msg, level="ok") {
-    elStatus.textContent = msg;
-    elStatus.className = "status" + (level==="warn" ? " warn" : level==="err" ? " err" : "");
-  }
-
-  function loadDeck() {
-    try { return JSON.parse(localStorage.getItem(KEY_DECK)) ?? []; }
-    catch { return []; }
-  }
-  function saveDeck(deck) {
-    localStorage.setItem(KEY_DECK, JSON.stringify(deck));
-    localStorage.setItem(KEY_UPDATED, new Date().toISOString());
-  }
-  function loadState() {
-    try {
-      return JSON.parse(localStorage.getItem(KEY_STATE)) ?? {
-        seenToday: 0,
-        lastSeenDate: null,
-        history: []
-      };
-    } catch {
-      return { seenToday: 0, lastSeenDate: null, history: [] };
-    }
-  }
-  function saveState(st) { localStorage.setItem(KEY_STATE, JSON.stringify(st)); }
-
-  function getSource() { return localStorage.getItem(KEY_SOURCE) || "default"; }
-  function setSource(s) { localStorage.setItem(KEY_SOURCE, s); }
-  function getVersion() { return localStorage.getItem(KEY_VERSION) || ""; }
-  function setVersion(v) { localStorage.setItem(KEY_VERSION, v || ""); }
-
-  function todayKey() {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-  }
-
-  let deck = loadDeck();
-  let state = loadState();
-  let currentIndex = -1;
-
-  // ✅「戻る」のための履歴スタック（表示したカードの並び）
-  let navStack = [];
-  let isAnimatingNav = false;
-
-  function ensureTodayCounter() {
-    const t = todayKey();
-    if (state.lastSeenDate !== t) {
-      state.lastSeenDate = t;
-      state.seenToday = 0;
-      saveState(state);
-    }
-  }
-
-  function updateKPI() {
-    ensureTodayCounter();
-    kCards.textContent = String(deck.length);
-    kToday.textContent = String(state.seenToday);
-    const upd = localStorage.getItem(KEY_UPDATED);
-    kUpdated.textContent = upd ? new Date(upd).toLocaleString() : "-";
-    kSource.textContent = (getSource()==="custom") ? "カスタム" : "既定";
-  }
-
-  function showCard(i, opts = {}) {
-    // opts: { revisit?:boolean, silent?:boolean }
-    if (deck.length === 0) {
-      elPos.textContent = "-";
-      elFront.textContent = "デッキが空です（既定デッキの読み込みに失敗した可能性があります）";
-      elBack.style.display = "none";
-      elBack.textContent = "";
-      return;
+    function markSeen(card){
+      if(!card) return;
+      const seenSet = getSeenSet();
+      if(!seenSet.has(card.id)){
+        seenSet.add(card.id);
+        setSeenSet(seenSet);
+      }
     }
 
-    currentIndex = i;
-    const c = deck[i];
-    elPos.textContent = `#${i+1} / ${deck.length}`;
-    elFront.textContent = c.front ?? "";
-    elBack.textContent  = c.back ?? "";
-    elBack.style.display = "none";
-
-    // ✅SRS用：カード表示時刻を記録
-    const stats = loadStats();
-    stats.lastShownAt = Date.now();
-    stats.lastRevealAt = null;
-    stats.lastIndex = i;
-    stats.lastIsRevisit = !!opts.revisit;
-    saveStats(stats);
-
-    if (!opts.silent) {
-      elCard.classList.remove("pulse");
-      void elCard.offsetWidth;
-      elCard.classList.add("pulse");
-      setTimeout(()=> elCard.classList.remove("pulse"), 700);
+    function goRandom(){
+      if(idx >= order.length - 1) return;
+      idx++;
+      showBack = false;
+      const c = currentCard();
+      markSeen(c);
+      incTodayCount();
+      persistState();
+      render();
     }
-  }
 
-  function resetSessionHistory() {
-    state.history = [];
-    saveState(state);
-  }
-
-  // --- 既存の「見た目ランダム」抽選（直近回避）
-  function pickRandomAvoidingRecent() {
-    if (deck.length === 0) return -1;
-
-    const maxTry = Math.min(80, deck.length * 2);
-    let i = -1;
-    for (let t = 0; t < maxTry; t++) {
-      const cand = Math.floor(Math.random() * deck.length);
-      if (cand === currentIndex) continue;
-      if (deck.length >= 8 && state.history.includes(cand)) continue;
-      i = cand; break;
+    function goPrev(){
+      if(idx <= 0) return;
+      idx--;
+      showBack = false;
+      const c = currentCard();
+      markSeen(c);
+      persistState();
+      render();
     }
-    if (i === -1) {
-      state.history = [];
-      i = Math.floor(Math.random() * deck.length);
+
+    function toggleBack(){
+      showBack = !showBack;
+      persistState();
+      render();
     }
-    return i;
-  }
 
-  // ✅苦手寄り（重み付き）抽選
-  function pickWeightedByStruggle() {
-    if (deck.length === 0) return -1;
+    function shuffleOrder(){
+      for(let i=order.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      idx = 0;
+      showBack = false;
+      persistState();
+      render();
+      showToast("シャッフルしました");
+    }
 
-    const stats = loadStats();
-    const scores = stats.struggleScore || {};
+    function resetAll(){
+      localStorage.removeItem(KEY_STATE);
+      localStorage.removeItem(KEY_SEEN);
+      localStorage.removeItem(KEY_TODAY);
+      localStorage.removeItem(KEY_TODAY_DATE);
+      order = cards.map((_,i)=>i);
+      idx = 0;
+      showBack = false;
+      render();
+      showToast("初期化しました");
+    }
 
-    const weights = deck.map((_, i) => {
-      const s = Number(scores[String(i)] ?? 0);
-      const w = 1 + Math.min(6, Math.max(0, s));
-      return w;
+    // BGM（初期OFF）
+    if(btnBgm && audioBgm){
+      btnBgm.addEventListener("click", async ()=>{
+        try{
+          if(btnBgm.dataset.on === "true"){
+            audioBgm.pause();
+            btnBgm.dataset.on = "false";
+            btnBgm.textContent = "BGM: OFF";
+            showToast("BGMを停止");
+          }else{
+            await audioBgm.play();
+            btnBgm.dataset.on = "true";
+            btnBgm.textContent = "BGM: ON";
+            showToast("BGMを再生");
+          }
+        }catch(e){
+          showToast("BGMを再生できません（端末設定/操作起点を確認）");
+        }
+      });
+    }
+
+    // Swipe（右=戻る / 左=次へ）+ 視覚エフェクト
+    (function setupSwipe(){
+      const root = $("swipeRoot");
+      if(!root) return;
+
+      let sx=0, sy=0, st=0, moved=false;
+      const THRESH = 46;
+      const VERT_GUARD = 1.2;
+
+      root.addEventListener("touchstart",(e)=>{
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY; st = Date.now();
+        moved = false;
+      }, {passive:true});
+
+      root.addEventListener("touchmove",()=>{ moved = true; }, {passive:true});
+
+      root.addEventListener("touchend",(e)=>{
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        const dt = Date.now() - st;
+
+        if(!moved) return;
+        if(dt > 700) return;
+        if(Math.abs(dy) > Math.abs(dx) * VERT_GUARD) return;
+
+        if(Math.abs(dx) >= THRESH){
+          if(dx < 0){
+            if(idx < order.length - 1){
+              flashGlow("right");
+              goNext();
+              showToast("次へ");
+            }else{
+              flashGlow("right");
+              showToast("最後のカードです");
+            }
+          }else{
+            if(idx > 0){
+              flashGlow("left");
+              goPrev();
+              showToast("前へ戻る");
+            }else{
+              flashGlow("left");
+              showToast("これ以上戻れません");
+            }
+          }
+        }
+      }, {passive:true});
+    })();
+
+    // CSVインポート
+    fileCsv.addEventListener("change", async ()=>{
+      const f = fileCsv.files && fileCsv.files[0];
+      if(!f) return;
+      try{
+        const text = await f.text();
+        const parsed = parseCSV(text);
+        const built = buildCards(parsed);
+        if(built.length === 0){
+          showToast("CSVが空です");
+          return;
+        }
+        cards = built;
+        order = cards.map((_,i)=>i);
+        idx = 0;
+        showBack = false;
+
+        internalCsvUsed = f.name;
+        internalUpdatedAt = new Date().toLocaleString();
+
+        persistState();
+        render();
+        showToast("CSVを読み込みました");
+      }catch(e){
+        showToast("CSV読み込みに失敗しました");
+      }finally{
+        fileCsv.value = "";
+      }
     });
 
-    const recentSet = new Set(deck.length >= 8 ? state.history : []);
-    const usable = weights.map((w, i) => {
-      if (i === currentIndex) return 0;
-      if (recentSet.has(i)) return 0.2;
-      return w;
+    btnLoadDefault.addEventListener("click", async ()=>{ await boot(true); });
+
+    btnNext.addEventListener("click", ()=>{
+      if(idx < order.length - 1){
+        flashGlow("right"); goRandom(); showToast("次へ");
+      }else{
+        flashGlow("right"); showToast("最後のカードです");
+      }
+    });
+    btnPrev.addEventListener("click", ()=>{
+      if(idx > 0){
+        flashGlow("left"); goPrev(); showToast("前へ戻る");
+      }else{
+        flashGlow("left"); showToast("これ以上戻れません");
+      }
+    });
+    btnToggle.addEventListener("click", toggleBack);
+    btnShuffle.addEventListener("click", shuffleOrder);
+
+    btnResetToday.addEventListener("click", ()=>{
+      resetTodayCount();
+      render();
+      showToast("今日カウントをリセット");
     });
 
-    const total = usable.reduce((a,b)=>a+b,0);
-    if (total <= 0) return pickRandomAvoidingRecent();
+    btnResetAll.addEventListener("click", ()=>{
+      const ok = confirm("進捗と今日カウントを初期化します。よろしいですか？");
+      if(!ok) return;
+      resetAll();
+    });
 
-    let r = Math.random() * total;
-    for (let i = 0; i < usable.length; i++) {
-      r -= usable[i];
-      if (r <= 0) return i;
-    }
-    return pickRandomAvoidingRecent();
-  }
+    async function boot(forceReload=false){
+      try{
+        elFront.textContent = "読み込み中…";
+        elBack.textContent = "";
+        elBack.classList.remove("show");
+        btnToggle.disabled = true;
+        btnPrev.disabled = true;
+        btnNext.disabled = true;
 
-  // ✅「ランダムを装った最適化」：70%通常、30%苦手寄り
-  function nextSmart() {
-    if (deck.length === 0) return;
+        if(!forceReload) restoreState();
 
-    const useStruggle = (Math.random() < 0.30);
-    const i = useStruggle ? pickWeightedByStruggle() : pickRandomAvoidingRecent();
+        const { text, used } = await loadDefaultCsvText();
+        const parsed = parseCSV(text);
+        const built = buildCards(parsed);
 
-    state.history.push(i);
-    if (state.history.length > Math.min(80, deck.length)) {
-      state.history = state.history.slice(-Math.min(80, deck.length));
-    }
+        if(built.length === 0){
+          cards = []; order = []; idx = 0; showBack = false;
+          internalCsvUsed = used.replace("./","");
+          internalUpdatedAt = new Date().toLocaleString();
+          render();
+          showToast("デフォルトCSVが空です");
+          return;
+        }
 
-    ensureTodayCounter();
-    state.seenToday += 1;
-    saveState(state);
+        cards = built;
 
-    // ✅戻る用履歴
-    navStack.push(i);
+        const okOrder = Array.isArray(order)
+          && order.length === cards.length
+          && order.every(n=>Number.isInteger(n) && n>=0 && n<cards.length);
 
-    showCard(i);
-    updateKPI();
-  }
+        if(!okOrder){
+          order = cards.map((_,i)=>i);
+          idx = 0;
+          showBack = false;
+        }
+        clampIndex();
 
-  // ✅「次へ」直前に、滞在時間で苦手スコアを微調整
-  function updateStruggleByDwell() {
-    const stats = loadStats();
-    if (stats.lastIndex == null || stats.lastIndex < 0) return;
+        internalCsvUsed = used.replace("./","");
+        internalUpdatedAt = new Date().toLocaleString();
 
-    // ✅再訪中は学習判定しない（統計二重汚染を防ぐ）
-    if (stats.lastIsRevisit) return;
-
-    const idx = String(stats.lastIndex);
-    const scores = stats.struggleScore || {};
-    let s = Number(scores[idx] ?? 0);
-
-    if (stats.lastRevealAt == null) {
-      scores[idx] = clampScore(s);
-      stats.struggleScore = scores;
-      saveStats(stats);
-      return;
-    }
-
-    const dt = Date.now() - stats.lastRevealAt;
-    if (dt >= 6000) s += 1.0;
-    else if (dt <= 1500) s -= 0.5;
-
-    scores[idx] = clampScore(s);
-    stats.struggleScore = scores;
-    saveStats(stats);
-  }
-
-  function parseDeckFromCSV(text) {
-    const rows = parseCSV(text);
-    if (rows.length === 0) return [];
-
-    const header = rows[0].map(s => String(s ?? "").trim().toLowerCase());
-    let start = 0, idxFront = 0, idxBack = 1;
-
-    const hFront = header.indexOf("front");
-    const hBack  = header.indexOf("back");
-    if (hFront >= 0 && hBack >= 0) {
-      start = 1; idxFront = hFront; idxBack = hBack;
-    }
-
-    const out = [];
-    for (let r = start; r < rows.length; r++) {
-      const row = rows[r];
-      const front = String(row[idxFront] ?? "").trim();
-      const back  = String(row[idxBack]  ?? "").trim();
-      if (!front && !back) continue;
-      out.push({ front, back });
-    }
-    return out;
-  }
-
-  async function fetchJSON(url) {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error("fetch failed");
-    return await res.json();
-  }
-
-  async function fetchText(url) {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error("fetch failed");
-    return await res.text();
-  }
-
-  async function ensureDefaultDeckLoaded() {
-    let meta = null;
-    try { meta = await fetchJSON(META_URL); } catch {}
-
-    const source = getSource();
-    const storedVersion = getVersion();
-    const metaVersion = meta?.version || "";
-
-    const needsInit = deck.length === 0;
-    const canAutoUpdate = (source === "default");
-    const needsUpdate = canAutoUpdate && metaVersion && storedVersion && (metaVersion !== storedVersion);
-
-    if (!needsInit && !needsUpdate) {
-      if (metaVersion && !storedVersion && source==="default") setVersion(metaVersion);
-      return;
-    }
-
-    try {
-      setStatus(needsInit ? "既定デッキを読み込み中…" : "既定デッキを更新中…", "warn");
-      const csv = await fetchText(DEFAULT_DECK_URL);
-      const newDeck = parseDeckFromCSV(csv);
-      if (newDeck.length === 0) throw new Error("empty deck");
-
-      deck = newDeck;
-      saveDeck(deck);
-      setSource("default");
-      if (metaVersion) setVersion(metaVersion);
-
-      updateKPI();
-
-      // ✅初期表示＋履歴
-      showCard(0, { silent:true });
-      navStack = [0];
-
-      setStatus(needsUpdate ? "既定デッキを更新しました" : "準備完了（既定デッキ）");
-    } catch (e) {
-      if (deck.length) {
-        setStatus("既定デッキの読み込みに失敗しました（端末内データで継続）", "warn");
-      } else {
-        setStatus("既定デッキの読み込みに失敗しました（オンライン接続を確認）", "err");
-        showCard(-1);
+        markSeen(currentCard());
+        persistState();
+        render();
+      }catch(e){
+        cards = []; order = []; idx = 0; showBack = false;
+        render();
+        showToast("deck_default.csv を読み込めません（配置/名前を確認）");
       }
     }
-  }
 
-  // ==========================================================
-  // Swipe: 誤作動防止＋フィードバック＋戻る一貫性
-  // ==========================================================
-
-  function isInteractiveTarget(t) {
-    if (!t) return false;
-    return !!t.closest("button, a, input, textarea, select, details, summary, label");
-  }
-
-  const SWIPE = {
-    ANGLE_RATIO: 1.2,
-    DIST_PX: 60,
-    VEL_PX_PER_MS: 0.35,
-    MAX_TAP_MS: 450,
-    OFFSCREEN: () => Math.min(window.innerWidth * 0.9, 520),
-  };
-
-  let drag = {
-    active:false,
-    pointerId:null,
-    startX:0, startY:0,
-    lastX:0, lastY:0,
-    startT:0, lastT:0,
-    lockedAxis:null, // "x" | "y" | null
-  };
-
-  function setCardTransform(x, withTransition) {
-    if (withTransition) {
-      elCard.style.transition = "transform 180ms ease, opacity 180ms ease";
-    } else {
-      elCard.style.transition = "none";
-    }
-    elCard.style.transform = `translateX(${x}px)`;
-  }
-
-  function clearCardTransform() {
-    elCard.style.transition = "transform 160ms ease";
-    elCard.style.transform = "translateX(0px)";
-  }
-
-  function haptic(ms=10){
-    try { if (navigator.vibrate) navigator.vibrate(ms); } catch {}
-  }
-
-  function animateNavigate(direction /* "next"|"back" */) {
-    if (isAnimatingNav) return;
-    if (deck.length === 0) return;
-
-    if (direction === "back" && navStack.length <= 1) {
-      haptic(8);
-      elCard.classList.remove("pulse"); void elCard.offsetWidth; elCard.classList.add("pulse");
-      setTimeout(()=> elCard.classList.remove("pulse"), 650);
-      setStatus("戻れません（これが最初のカードです）", "warn");
-      clearCardTransform();
-      return;
-    }
-
-    isAnimatingNav = true;
-
-    const off = SWIPE.OFFSCREEN();
-    const outX = (direction === "next") ? -off : off;
-
-    elCard.style.transition = "transform 190ms ease, opacity 190ms ease";
-    elCard.style.opacity = "0.0";
-    elCard.style.transform = `translateX(${outX}px)`;
-
-    setTimeout(() => {
-      if (direction === "next") {
-        updateStruggleByDwell();
-        nextSmart();
-      } else {
-        navStack.pop();
-        const prev = navStack[navStack.length - 1];
-        showCard(prev, { revisit:true, silent:true });
-        updateKPI();
-      
-        // ✅戻る操作は静かに行う
-        // setStatus("前のカードへ戻りました");
-      }
-
-      const inX = (direction === "next") ? off : -off;
-      elCard.style.transition = "none";
-      elCard.style.opacity = "0.0";
-      elCard.style.transform = `translateX(${inX}px)`;
-
-      void elCard.offsetWidth;
-
-      elCard.style.transition = "transform 190ms ease, opacity 190ms ease";
-      elCard.style.opacity = "1.0";
-      elCard.style.transform = "translateX(0px)";
-
-      elCard.classList.remove("pulse"); void elCard.offsetWidth; elCard.classList.add("pulse");
-      setTimeout(()=> elCard.classList.remove("pulse"), 700);
-
-      haptic(10);
-
-      setTimeout(() => { isAnimatingNav = false; }, 220);
-    }, 210);
-  }
-
-  // --- Swipe handlers (pointer events)
-  elCard.addEventListener("pointerdown", (e) => {
-    if (isAnimatingNav) return;
-    if (isInteractiveTarget(e.target)) return;
-
-    drag.active = true;
-    drag.pointerId = e.pointerId;
-    drag.startX = e.clientX;
-    drag.startY = e.clientY;
-    drag.lastX = e.clientX;
-    drag.lastY = e.clientY;
-    drag.startT = performance.now();
-    drag.lastT  = drag.startT;
-    drag.lockedAxis = null;
-
-    elCard.setPointerCapture?.(e.pointerId);
-    elCard.classList.add("is-dragging");
-  });
-
-  elCard.addEventListener("pointermove", (e) => {
-    if (!drag.active || e.pointerId !== drag.pointerId) return;
-
-    const x = e.clientX, y = e.clientY;
-    const dx = x - drag.startX;
-    const dy = y - drag.startY;
-
-    if (!drag.lockedAxis) {
-      const adx = Math.abs(dx), ady = Math.abs(dy);
-      if (adx < 10 && ady < 10) return;
-      if (adx > ady * SWIPE.ANGLE_RATIO) drag.lockedAxis = "x";
-      else if (ady > adx * SWIPE.ANGLE_RATIO) drag.lockedAxis = "y";
-      else return;
-    }
-
-    if (drag.lockedAxis === "y") return;
-
-    const damp = 0.92;
-    setCardTransform(dx * damp, false);
-
-    drag.lastX = x; drag.lastY = y;
-    drag.lastT = performance.now();
-  });
-
-  elCard.addEventListener("pointerup", (e) => {
-    if (!drag.active || e.pointerId !== drag.pointerId) return;
-
-    const endT = performance.now();
-    const dt = Math.max(1, endT - drag.startT);
-    const dx = e.clientX - drag.startX;
-
-    elCard.classList.remove("is-dragging");
-
-    if (drag.lockedAxis !== "x") {
-      clearCardTransform();
-      drag.active = false;
-      return;
-    }
-
-    const vx = dx / dt;
-    const adx = Math.abs(dx);
-    const avx = Math.abs(vx);
-
-    const passDist = adx >= SWIPE.DIST_PX;
-    const passVel  = (dt <= SWIPE.MAX_TAP_MS) && (avx >= SWIPE.VEL_PX_PER_MS);
-
-    if (passDist || passVel) {
-      if (dx < 0) animateNavigate("next");   // 左スワイプ=次へ
-      else animateNavigate("back");          // 右スワイプ=戻る
-    } else {
-      clearCardTransform();
-    }
-
-    drag.active = false;
-  });
-
-  elCard.addEventListener("pointercancel", (e) => {
-    if (!drag.active || e.pointerId !== drag.pointerId) return;
-    elCard.classList.remove("is-dragging");
-    clearCardTransform();
-    drag.active = false;
-  });
-
-  // --- Buttons
-  document.getElementById("btnReveal").onclick = () => {
-    if (deck.length === 0) return;
-
-    const willShow = (elBack.style.display === "none");
-    elBack.style.display = willShow ? "block" : "none";
-
-    if (willShow) {
-      const stats = loadStats();
-      stats.lastRevealAt = Date.now();
-      stats.lastIndex = currentIndex;
-
-      const idx = String(currentIndex);
-      const rc = stats.revealCount || {};
-      const scores = stats.struggleScore || {};
-
-      const newCount = (Number(rc[idx] ?? 0) + 1);
-      rc[idx] = newCount;
-
-      if (newCount >= 2) {
-        const s = Number(scores[idx] ?? 0);
-        scores[idx] = clampScore(s + 1.0);
-      }
-
-      stats.revealCount = rc;
-      stats.struggleScore = scores;
-      saveStats(stats);
-    }
-  };
-
-  document.getElementById("btnNext").onclick = () => {
-    updateStruggleByDwell();
-    nextSmart();
-  };
-
-  document.getElementById("btnShuffle").onclick = () => {
-    resetSessionHistory();
-    nextSmart();
-  };
-
-  document.getElementById("btnCopy").onclick = async () => {
-    if (deck.length === 0) return;
-    const c = deck[currentIndex >= 0 ? currentIndex : 0];
-    const txt = `【表】${c.front ?? ""}\n【裏】${c.back ?? ""}`;
-    try {
-      await navigator.clipboard.writeText(txt);
-      setStatus("コピーしました");
-    } catch {
-      setStatus("コピーできませんでした（ブラウザ権限）", "warn");
-    }
-  };
-
-  document.getElementById("btnImport").onclick = async () => {
-    const f = document.getElementById("file").files?.[0];
-    if (!f) { alert("CSVファイルを選択してください"); return; }
-    const text = await f.text();
-    const newDeck = parseDeckFromCSV(text);
-    if (newDeck.length === 0) { alert("カードが0件でした"); return; }
-
-    deck = newDeck;
-    saveDeck(deck);
-    setSource("custom");
-    setVersion("");
-    state.history = [];
-    saveState(state);
-
-    updateKPI();
-    showCard(0, { silent:true });
-    navStack = [0];
-
-    setStatus(`インポート完了：${deck.length}枚（カスタム）`);
-  };
-
-  document.getElementById("btnExport").onclick = () => {
-    if (deck.length === 0) { alert("デッキが空です"); return; }
-    const rows = [["front","back"], ...deck.map(c => [c.front ?? "", c.back ?? ""])];
-    const csv = toCSV(rows);
-    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "deck.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  document.getElementById("btnResetDefault").onclick = async () => {
-    if (!confirm("既定デッキに戻します。よろしいですか？")) return;
-    setSource("default");
-    setVersion("");
-    deck = [];
-    saveDeck(deck);
-    state.history = [];
-    saveState(state);
-    updateKPI();
-    await ensureDefaultDeckLoaded();
-  };
-
-  document.getElementById("btnResetAll").onclick = () => {
-    if (!confirm("端末内のデッキと学習データを初期化します。よろしいですか？")) return;
-    localStorage.removeItem(KEY_DECK);
-    localStorage.removeItem(KEY_STATE);
-    localStorage.removeItem(KEY_UPDATED);
-    localStorage.removeItem(KEY_SOURCE);
-    localStorage.removeItem(KEY_VERSION);
-    localStorage.removeItem(KEY_STATS);
-    localStorage.removeItem(KEY_BGM);
-    deck = [];
-    state = loadState();
-    currentIndex = -1;
-    navStack = [];
-    updateKPI();
-    showCard(-1);
-    setStatus("初期化しました", "warn");
-    setBgmUI(false);
-    stopBgm();
-  };
-
-  // ==========================================================
-  // ✅BGM control (initial OFF + persisted)
-  // ==========================================================
-  function getBgmPref() {
-    const v = localStorage.getItem(KEY_BGM);
-    return (v === "on") ? "on" : "off";
-  }
-  function setBgmPref(on) {
-    localStorage.setItem(KEY_BGM, on ? "on" : "off");
-  }
-  function setBgmUI(on) {
-    btnBgm.classList.toggle("on", on);
-    btnBgm.setAttribute("aria-pressed", on ? "true" : "false");
-    bgmState.textContent = on ? "ON" : "OFF";
-    bgmIcon.textContent = on ? "♫" : "♪";
-  }
-
-  async function startBgm() {
-    if (!elBgm) return;
-    try {
-      elBgm.volume = 0.35; // ✅学習邪魔になりにくい初期音量
-      const p = elBgm.play();
-      if (p && typeof p.then === "function") await p;
-    } catch (e) {
-      // autoplay制限：ユーザー操作後でも端末により弾かれる場合がある
-      setStatus("BGMを再生できませんでした（端末設定/消音モード等）", "warn");
-      setBgmUI(false);
-      setBgmPref(false);
-    }
-  }
-  function stopBgm() {
-    if (!elBgm) return;
-    try { elBgm.pause(); elBgm.currentTime = 0; } catch {}
-  }
-
-  btnBgm.onclick = async () => {
-    const isOn = btnBgm.classList.contains("on");
-    if (isOn) {
-      stopBgm();
-      setBgmUI(false);
-      setBgmPref(false);
-      setStatus("BGM：OFF");
-    } else {
-      setBgmUI(true);
-      setBgmPref(true);
-      await startBgm();
-      setStatus("BGM：ON");
-    }
-  };
-
-  // iOS対策：画面復帰で止まっていたら復元
-  document.addEventListener("visibilitychange", async () => {
-    if (document.hidden) return;
-    const pref = getBgmPref();
-    if (pref === "on") {
-      setBgmUI(true);
-      await startBgm();
-    }
-  });
-
-  // --- Init
-  (async () => {
-    updateKPI();
-
-    // ✅スワイプ矢印の初回アニメ（2秒後に解除）
-    setTimeout(()=> elCard.classList.remove("hint-once"), 2600);
-
-    // ✅BGM：初期OFFだが、端末に保存されていれば復元
-    const pref = getBgmPref();
-    const wantOn = (pref === "on");
-    setBgmUI(wantOn);
-    if (wantOn) await startBgm();
-
-    if (deck.length) {
-      showCard(0, { silent:true });
-      navStack = [0];
-      setStatus("準備完了（端末内データ）");
-    } else {
-      showCard(-1);
-    }
-
-    await ensureDefaultDeckLoaded();
-    updateKPI();
-
-    if (deck.length && (currentIndex == null || currentIndex < 0)) {
-      showCard(0, { silent:true });
-      navStack = [0];
-    }
-
-    if (deck.length && currentIndex === 0) {
-      setStatus(getSource()==="custom" ? "準備完了（カスタム）" : "準備完了（既定デッキ）");
-    }
-  })();
-</script>
+    boot(false);
+  </script>
+
+  <!-- PWA / SW register（reg.update()） -->
+  <script>
+    (function(){
+      if(!("serviceWorker" in navigator)) return;
+
+      window.addEventListener("load", async ()=>{
+        try{
+          const reg = await navigator.serviceWorker.register("./sw.js");
+          try { await reg.update(); } catch {}
+          reg.addEventListener("updatefound", ()=>{ console.log("[SW] updatefound"); });
+        }catch(e){
+          console.log("[SW] register failed", e);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
