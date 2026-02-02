@@ -20,7 +20,7 @@
 
       /* ✅ Violet base */
       --accent:#B56CFF;
-      --accent2:#A7D8FF; /* ✅青銀系（フィードバックで使う） */
+      --accent2:#A7D8FF; /* ✅青銀系 */
 
       --warn:#FFCC66;
       --err:#FF6B7A;
@@ -56,8 +56,17 @@
       padding:16px;
     }
 
+    /* ✅ヘッダー行：タイトル＋BGM */
+    .head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin:6px 0 2px;
+    }
+
     h1{
-      margin:6px 0 6px;
+      margin:0;
       font-size:22px;
       letter-spacing:.06em;
       line-height:1.25;
@@ -164,7 +173,7 @@
       padding:12px 14px;
       cursor:pointer;
       box-shadow: var(--shadow2);
-      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease, opacity .12s ease;
       min-height:44px;
       touch-action:manipulation;
     }
@@ -236,7 +245,7 @@
       cursor:grabbing;
     }
 
-    /* ✅青銀パルス（スワイプ成功時に軽く気持ち良く） */
+    /* ✅青銀パルス（操作成功時） */
     @keyframes pulseBlueSilver {
       0%   { box-shadow: var(--shadow); }
       35%  { box-shadow: 0 18px 50px rgba(0,0,0,.55), 0 0 0 2px rgba(167,216,255,.18), 0 0 36px rgba(167,216,255,.22); }
@@ -246,20 +255,138 @@
       animation: pulseBlueSilver 520ms ease-out;
     }
 
+    /* ===== Swipe hints (visual affordance) ===== */
+    .swipe-hint{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin:10px 2px 0;
+      color:rgba(234,240,255,.72);
+      font-size:12px;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .swipe-hint .cap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      border-radius:999px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      white-space:nowrap;
+    }
+    .swipe-hint .cap b{ color: rgba(167,216,255,.95); font-weight:800; }
+    .swipe-hint .cap .arrow{
+      font-weight:900;
+      color:rgba(167,216,255,.92);
+      text-shadow: 0 0 14px rgba(167,216,255,.18);
+    }
+
+    /* カード左右のうっすら矢印（説明なしでも気づく） */
+    .card .edge{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.20);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(167,216,255,.75);
+      pointer-events:none;
+      opacity:.35;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+    }
+    .card .edge.left{ left:10px; }
+    .card .edge.right{ right:10px; }
+    .card .edge span{
+      font-size:20px;
+      font-weight:900;
+    }
+
+    /* 初回だけ「ふわっ」と気づかせる */
+    @keyframes hintBreathe {
+      0%,100% { opacity: .28; transform: translateY(-50%) scale(1); }
+      50%     { opacity: .55; transform: translateY(-50%) scale(1.06); }
+    }
+    .card.hint-once .edge{
+      animation: hintBreathe 1.2s ease-in-out 2;
+    }
+
+    /* ===== BGM button ===== */
+    .bgm-btn{
+      flex: 0 0 auto;
+      min-width: 130px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(167,216,255,.22);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      box-shadow: var(--shadow2);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-weight:800;
+      font-size:13px;
+      color:rgba(234,240,255,.90);
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+      transition: transform .08s ease, border-color .12s ease, box-shadow .12s ease, opacity .12s ease;
+      height:44px;
+      white-space:nowrap;
+    }
+    .bgm-btn:hover{
+      border-color: rgba(167,216,255,.38);
+      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(167,216,255,.10);
+    }
+    .bgm-btn:active{ transform: translateY(1px); }
+    .bgm-btn.on{
+      border-color: rgba(167,216,255,.55);
+      box-shadow: 0 14px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(167,216,255,.14), 0 0 18px rgba(167,216,255,.18);
+    }
+    .bgm-btn small{
+      font-size:11px;
+      opacity:.82;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+
     @media (max-width:560px){
       .wrap{padding:14px}
       h1{font-size:20px}
       .big{font-size:19px}
+      .bgm-btn{ min-width: 118px; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <h1 style="margin:6px 0 6px;">八東古文単語</h1>
-    <div class="muted" style="margin-bottom:6px;">
-      生徒向け：<b>初回は自動でデッキを読み込みます</b><br>
-      データは端末内に保存されます。オフラインでも動作します（PWA）。
+
+    <div class="head">
+      <div>
+        <h1>八東古文単語</h1>
+        <div class="muted" style="margin-top:4px;">
+          生徒向け：<b>初回は自動でデッキを読み込みます</b><br>
+          データは端末内に保存されます。オフラインでも動作します（PWA）。
+        </div>
+      </div>
+
+      <!-- ✅BGM button (initial OFF) -->
+      <button id="btnBgm" class="bgm-btn" type="button" aria-pressed="false" title="BGM（初期OFF）">
+        <span id="bgmIcon">♪</span>
+        <span id="bgmLabel">BGM</span>
+        <small id="bgmState">OFF</small>
+      </button>
     </div>
 
     <div class="row">
@@ -288,11 +415,20 @@
     <div class="sep"></div>
 
     <!-- ✅ここがスワイプ対象 -->
-    <div class="card" id="card">
+    <div class="card hint-once" id="card">
+      <div class="edge left" aria-hidden="true"><span>‹</span></div>
+      <div class="edge right" aria-hidden="true"><span>›</span></div>
+
       <div class="muted" id="pos">-</div>
       <div class="big" id="front" style="margin-top:10px;">読み込み中…</div>
       <div class="sep"></div>
       <div class="big" id="back" style="display:none;"></div>
+    </div>
+
+    <!-- ✅スワイプの意味を明示 -->
+    <div class="swipe-hint">
+      <div class="cap"><span class="arrow">←</span> 右スワイプで <b>戻る</b></div>
+      <div class="cap"><b>次へ</b> は左スワイプ <span class="arrow">→</span></div>
     </div>
 
     <div class="sep"></div>
@@ -315,6 +451,11 @@
       ヒント：スマホは「ホーム画面に追加」でアプリ風に使えます。
     </div>
   </div>
+
+  <!-- ✅BGM audio (file path) -->
+  <audio id="bgm" preload="auto" loop playsinline>
+    <source src="./assets/bgm/study.mp3" type="audio/mpeg">
+  </audio>
 
 <script>
   // --- PWA register（更新を即チェック）
@@ -339,15 +480,9 @@
 
   // ✅軽量SRS（苦手推定）用
   const KEY_STATS = "fc_stats_v1";
-  // stats shape:
-  // {
-  //   revealCount: { [idx]: number },
-  //   struggleScore: { [idx]: number },
-  //   lastShownAt: number|null,
-  //   lastRevealAt: number|null,
-  //   lastIndex: number|null,
-  //   lastIsRevisit: boolean
-  // }
+
+  // ✅BGM保存キー（端末内にON/OFF記録）
+  const KEY_BGM = "fc_bgm_v1"; // "on" | "off"
 
   function loadStats() {
     try {
@@ -380,6 +515,12 @@
   const kToday  = document.getElementById("kToday");
   const kUpdated= document.getElementById("kUpdated");
   const kSource = document.getElementById("kSource");
+
+  // --- BGM DOM
+  const elBgm = document.getElementById("bgm");
+  const btnBgm = document.getElementById("btnBgm");
+  const bgmIcon = document.getElementById("bgmIcon");
+  const bgmState = document.getElementById("bgmState");
 
   // --- Minimal CSV parser (quoted fields, commas, CRLF)
   function parseCSV(text) {
@@ -457,7 +598,6 @@
   let currentIndex = -1;
 
   // ✅「戻る」のための履歴スタック（表示したカードの並び）
-  // 例： [0, 13, 7, 22] で currentIndex=22 の状態
   let navStack = [];
   let isAnimatingNav = false;
 
@@ -480,9 +620,7 @@
   }
 
   function showCard(i, opts = {}) {
-    // opts:
-    // { revisit?:boolean }  …戻る等の「再表示」
-    // { silent?:boolean }   …表示はするが演出しない
+    // opts: { revisit?:boolean, silent?:boolean }
     if (deck.length === 0) {
       elPos.textContent = "-";
       elFront.textContent = "デッキが空です（既定デッキの読み込みに失敗した可能性があります）";
@@ -508,7 +646,6 @@
 
     if (!opts.silent) {
       elCard.classList.remove("pulse");
-      // reflow
       void elCard.offsetWidth;
       elCard.classList.add("pulse");
       setTimeout(()=> elCard.classList.remove("pulse"), 700);
@@ -546,18 +683,16 @@
     const stats = loadStats();
     const scores = stats.struggleScore || {};
 
-    // 基本1、苦手スコアに応じて最大+6程度まで重くする（露骨すぎない）
     const weights = deck.map((_, i) => {
       const s = Number(scores[String(i)] ?? 0);
       const w = 1 + Math.min(6, Math.max(0, s));
       return w;
     });
 
-    // 直近回避（重み抽選でも露骨連続を避ける）
     const recentSet = new Set(deck.length >= 8 ? state.history : []);
     const usable = weights.map((w, i) => {
       if (i === currentIndex) return 0;
-      if (recentSet.has(i)) return 0.2; // 少しだけ残す（詰まり救済）
+      if (recentSet.has(i)) return 0.2;
       return w;
     });
 
@@ -579,7 +714,6 @@
     const useStruggle = (Math.random() < 0.30);
     const i = useStruggle ? pickWeightedByStruggle() : pickRandomAvoidingRecent();
 
-    // 履歴更新（既存挙動に準拠）
     state.history.push(i);
     if (state.history.length > Math.min(80, deck.length)) {
       state.history = state.history.slice(-Math.min(80, deck.length));
@@ -589,9 +723,8 @@
     state.seenToday += 1;
     saveState(state);
 
-    // ✅ナビ履歴（戻る用）に積む：前進のみ
-    if (navStack.length === 0) navStack.push(i);
-    else navStack.push(i);
+    // ✅戻る用履歴
+    navStack.push(i);
 
     showCard(i);
     updateKPI();
@@ -602,14 +735,13 @@
     const stats = loadStats();
     if (stats.lastIndex == null || stats.lastIndex < 0) return;
 
-    // ✅「戻る」等の再訪中は学習判定しない（統計の二重汚染を防ぐ）
+    // ✅再訪中は学習判定しない（統計二重汚染を防ぐ）
     if (stats.lastIsRevisit) return;
 
     const idx = String(stats.lastIndex);
     const scores = stats.struggleScore || {};
     let s = Number(scores[idx] ?? 0);
 
-    // 裏を開いていない場合は学習判定しない（自由運用を尊重）
     if (stats.lastRevealAt == null) {
       scores[idx] = clampScore(s);
       stats.struggleScore = scores;
@@ -617,8 +749,7 @@
       return;
     }
 
-    const dt = Date.now() - stats.lastRevealAt; // 裏→次へ の時間
-    // 目安：6秒以上→詰まり、1.5秒未満→軽快
+    const dt = Date.now() - stats.lastRevealAt;
     if (dt >= 6000) s += 1.0;
     else if (dt <= 1500) s -= 0.5;
 
@@ -631,7 +762,6 @@
     const rows = parseCSV(text);
     if (rows.length === 0) return [];
 
-    // detect header
     const header = rows[0].map(s => String(s ?? "").trim().toLowerCase());
     let start = 0, idxFront = 0, idxBack = 1;
 
@@ -665,7 +795,6 @@
   }
 
   async function ensureDefaultDeckLoaded() {
-    // 1) read meta (best-effort)
     let meta = null;
     try { meta = await fetchJSON(META_URL); } catch {}
 
@@ -711,22 +840,19 @@
   }
 
   // ==========================================================
-  // 1) スワイプ誤作動対策（角度/閾値/開始禁止エリア）
-  // 2) フィードバック（追従＋パルス＋バイブ）
-  // 3) 戻る一貫性（履歴スタック＋二重カウント抑止）
+  // Swipe: 誤作動防止＋フィードバック＋戻る一貫性
   // ==========================================================
 
   function isInteractiveTarget(t) {
     if (!t) return false;
-    // ボタン/入力/詳細/リンク/summary 上はスワイプ無効（タップ優先）
     return !!t.closest("button, a, input, textarea, select, details, summary, label");
   }
 
   const SWIPE = {
-    ANGLE_RATIO: 1.2,      // abs(dx) > abs(dy)*1.2 で横扱い
-    DIST_PX: 60,           // 距離閾値
-    VEL_PX_PER_MS: 0.35,   // 速度閾値
-    MAX_TAP_MS: 450,       // それ以上だと速度判定は弱めに
+    ANGLE_RATIO: 1.2,
+    DIST_PX: 60,
+    VEL_PX_PER_MS: 0.35,
+    MAX_TAP_MS: 450,
     OFFSCREEN: () => Math.min(window.innerWidth * 0.9, 520),
   };
 
@@ -761,60 +887,47 @@
     if (isAnimatingNav) return;
     if (deck.length === 0) return;
 
-    // ✅「戻る」が不可能なら何もしない（最上位）
     if (direction === "back" && navStack.length <= 1) {
       haptic(8);
       elCard.classList.remove("pulse"); void elCard.offsetWidth; elCard.classList.add("pulse");
       setTimeout(()=> elCard.classList.remove("pulse"), 650);
       setStatus("戻れません（これが最初のカードです）", "warn");
+      clearCardTransform();
       return;
     }
 
     isAnimatingNav = true;
 
     const off = SWIPE.OFFSCREEN();
-    const outX = (direction === "next") ? -off : off; // next:左へ飛ぶ, back:右へ飛ぶ
+    const outX = (direction === "next") ? -off : off;
 
-    // いったん飛ばす
     elCard.style.transition = "transform 190ms ease, opacity 190ms ease";
     elCard.style.opacity = "0.0";
     elCard.style.transform = `translateX(${outX}px)`;
 
-    // 画面外へ飛んだ後に中身差し替え→反対側から戻す
     setTimeout(() => {
-      // ✅中身更新（カウント/苦手推定はルールに従う）
       if (direction === "next") {
         updateStruggleByDwell();
-        // nextSmart が showCard/updateKPI/navStack 積みを含む
-        // ただし nextSmart は「今のカード」関係なくランダムなので、
-        // 既存仕様に合わせてそのまま。
         nextSmart();
       } else {
-        // ✅back: navStack を1つ戻すだけ（学習カウントしない）
         navStack.pop();
         const prev = navStack[navStack.length - 1];
-        // 再表示扱い（統計二重汚染を防ぐ）
         showCard(prev, { revisit:true, silent:true });
-        // KPIは変えない（seenToday増やさない）
         updateKPI();
         setStatus("前のカードへ戻りました");
       }
 
-      // 反対側から入れる
       const inX = (direction === "next") ? off : -off;
       elCard.style.transition = "none";
       elCard.style.opacity = "0.0";
       elCard.style.transform = `translateX(${inX}px)`;
 
-      // reflow
       void elCard.offsetWidth;
 
-      // 戻す
       elCard.style.transition = "transform 190ms ease, opacity 190ms ease";
       elCard.style.opacity = "1.0";
       elCard.style.transform = "translateX(0px)";
 
-      // ✅成功パルス（青銀）
       elCard.classList.remove("pulse"); void elCard.offsetWidth; elCard.classList.add("pulse");
       setTimeout(()=> elCard.classList.remove("pulse"), 700);
 
@@ -850,20 +963,16 @@
     const dx = x - drag.startX;
     const dy = y - drag.startY;
 
-    // 軸ロック（誤爆防止：角度判定）
     if (!drag.lockedAxis) {
       const adx = Math.abs(dx), ady = Math.abs(dy);
-      if (adx < 10 && ady < 10) return; // 微小は無視
+      if (adx < 10 && ady < 10) return;
       if (adx > ady * SWIPE.ANGLE_RATIO) drag.lockedAxis = "x";
       else if (ady > adx * SWIPE.ANGLE_RATIO) drag.lockedAxis = "y";
       else return;
     }
 
-    // 縦ならブラウザに任せる（カード追従もなし）
     if (drag.lockedAxis === "y") return;
 
-    // 横確定：追従（フィードバック）
-    // 少し減衰（気持ち良く）
     const damp = 0.92;
     setCardTransform(dx * damp, false);
 
@@ -877,19 +986,16 @@
     const endT = performance.now();
     const dt = Math.max(1, endT - drag.startT);
     const dx = e.clientX - drag.startX;
-    const dy = e.clientY - drag.startY;
 
     elCard.classList.remove("is-dragging");
 
-    // 途中で縦ロックだった場合は何もしない
     if (drag.lockedAxis !== "x") {
       clearCardTransform();
       drag.active = false;
       return;
     }
 
-    // ✅速度判定
-    const vx = dx / dt; // px/ms
+    const vx = dx / dt;
     const adx = Math.abs(dx);
     const avx = Math.abs(vx);
 
@@ -897,11 +1003,9 @@
     const passVel  = (dt <= SWIPE.MAX_TAP_MS) && (avx >= SWIPE.VEL_PX_PER_MS);
 
     if (passDist || passVel) {
-      // 方向：左スワイプ＝次へ、右スワイプ＝戻る
-      if (dx < 0) animateNavigate("next");
-      else animateNavigate("back");
+      if (dx < 0) animateNavigate("next");   // 左スワイプ=次へ
+      else animateNavigate("back");          // 右スワイプ=戻る
     } else {
-      // 戻す
       clearCardTransform();
     }
 
@@ -916,8 +1020,6 @@
   });
 
   // --- Buttons
-
-  // ✅答えを見る：2回目以降の裏表示だけ苦手寄りに（初回は全員見るため）
   document.getElementById("btnReveal").onclick = () => {
     if (deck.length === 0) return;
 
@@ -936,7 +1038,6 @@
       const newCount = (Number(rc[idx] ?? 0) + 1);
       rc[idx] = newCount;
 
-      // ✅2回目以降に裏を開く＝理解が固まっていない可能性が高い
       if (newCount >= 2) {
         const s = Number(scores[idx] ?? 0);
         scores[idx] = clampScore(s + 1.0);
@@ -948,7 +1049,6 @@
     }
   };
 
-  // ✅次へ：滞在時間で微調整→smart抽選
   document.getElementById("btnNext").onclick = () => {
     updateStruggleByDwell();
     nextSmart();
@@ -1025,6 +1125,7 @@
     localStorage.removeItem(KEY_SOURCE);
     localStorage.removeItem(KEY_VERSION);
     localStorage.removeItem(KEY_STATS);
+    localStorage.removeItem(KEY_BGM);
     deck = [];
     state = loadState();
     currentIndex = -1;
@@ -1032,11 +1133,82 @@
     updateKPI();
     showCard(-1);
     setStatus("初期化しました", "warn");
+    setBgmUI(false);
+    stopBgm();
   };
+
+  // ==========================================================
+  // ✅BGM control (initial OFF + persisted)
+  // ==========================================================
+  function getBgmPref() {
+    const v = localStorage.getItem(KEY_BGM);
+    return (v === "on") ? "on" : "off";
+  }
+  function setBgmPref(on) {
+    localStorage.setItem(KEY_BGM, on ? "on" : "off");
+  }
+  function setBgmUI(on) {
+    btnBgm.classList.toggle("on", on);
+    btnBgm.setAttribute("aria-pressed", on ? "true" : "false");
+    bgmState.textContent = on ? "ON" : "OFF";
+    bgmIcon.textContent = on ? "♫" : "♪";
+  }
+
+  async function startBgm() {
+    if (!elBgm) return;
+    try {
+      elBgm.volume = 0.35; // ✅学習邪魔になりにくい初期音量
+      const p = elBgm.play();
+      if (p && typeof p.then === "function") await p;
+    } catch (e) {
+      // autoplay制限：ユーザー操作後でも端末により弾かれる場合がある
+      setStatus("BGMを再生できませんでした（端末設定/消音モード等）", "warn");
+      setBgmUI(false);
+      setBgmPref(false);
+    }
+  }
+  function stopBgm() {
+    if (!elBgm) return;
+    try { elBgm.pause(); elBgm.currentTime = 0; } catch {}
+  }
+
+  btnBgm.onclick = async () => {
+    const isOn = btnBgm.classList.contains("on");
+    if (isOn) {
+      stopBgm();
+      setBgmUI(false);
+      setBgmPref(false);
+      setStatus("BGM：OFF");
+    } else {
+      setBgmUI(true);
+      setBgmPref(true);
+      await startBgm();
+      setStatus("BGM：ON");
+    }
+  };
+
+  // iOS対策：画面復帰で止まっていたら復元
+  document.addEventListener("visibilitychange", async () => {
+    if (document.hidden) return;
+    const pref = getBgmPref();
+    if (pref === "on") {
+      setBgmUI(true);
+      await startBgm();
+    }
+  });
 
   // --- Init
   (async () => {
     updateKPI();
+
+    // ✅スワイプ矢印の初回アニメ（2秒後に解除）
+    setTimeout(()=> elCard.classList.remove("hint-once"), 2600);
+
+    // ✅BGM：初期OFFだが、端末に保存されていれば復元
+    const pref = getBgmPref();
+    const wantOn = (pref === "on");
+    setBgmUI(wantOn);
+    if (wantOn) await startBgm();
 
     if (deck.length) {
       showCard(0, { silent:true });
@@ -1049,7 +1221,6 @@
     await ensureDefaultDeckLoaded();
     updateKPI();
 
-    // deckがあるのにcurrentIndex未設定だった場合
     if (deck.length && (currentIndex == null || currentIndex < 0)) {
       showCard(0, { silent:true });
       navStack = [0];
