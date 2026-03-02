@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v2026-02-02-2";
+const CACHE_VERSION = "v2026-02-02-3";
 const CACHE_NAME = `flashcards-${CACHE_VERSION}`;
 
 const ASSETS = [
