@@ -491,6 +491,9 @@
     const KEY_SEEN       = STORAGE_PREFIX + ".seenIds";
     const KEY_TODAY      = STORAGE_PREFIX + ".today";
     const KEY_TODAY_DATE = STORAGE_PREFIX + ".todayDate";
+    // ✅ Lobby (FLASH DAILY) 連携キー：古文単語330
+    const LOBBY_TODAY_KEY      = "hk.flash.kobun.todaySeen";
+    const LOBBY_TODAY_DATE_KEY = "hk.flash.kobun.todayYMD";
 
     // ✅ デフォルト読み込み：deck_default.csv 固定
     const DEFAULT_CSV_CANDIDATES = [
@@ -591,13 +594,27 @@
 
     function getTodayCount(){
       const t = todayKey();
+    
+      // 内部キー側
       const savedDate = localStorage.getItem(KEY_TODAY_DATE);
-      if(savedDate !== t){
+    
+      // ロビーキー側
+      const lobbyDate = localStorage.getItem(LOBBY_TODAY_DATE_KEY);
+    
+      // どちらかが今日でなければ、両方まとめて「今日扱い」に揃えて0リセット
+      if(savedDate !== t || lobbyDate !== t){
         localStorage.setItem(KEY_TODAY_DATE, t);
         localStorage.setItem(KEY_TODAY, "0");
+        localStorage.setItem(LOBBY_TODAY_DATE_KEY, t);
+        localStorage.setItem(LOBBY_TODAY_KEY, "0");
         return 0;
       }
-      return Number(localStorage.getItem(KEY_TODAY) || "0") || 0;
+    
+      // 内部値を正とし、ロビー側がズレてたら同期
+      const v = Number(localStorage.getItem(KEY_TODAY) || "0") || 0;
+      const lv = Number(localStorage.getItem(LOBBY_TODAY_KEY) || "0") || 0;
+      if(lv !== v) localStorage.setItem(LOBBY_TODAY_KEY, String(v));
+      return v;
     }
     function incTodayCount(){
       const c = getTodayCount() + 1;
@@ -605,8 +622,11 @@
       return c;
     }
     function resetTodayCount(){
-      localStorage.setItem(KEY_TODAY_DATE, todayKey());
+      const t = todayKey();
+      localStorage.setItem(KEY_TODAY_DATE, t);
       localStorage.setItem(KEY_TODAY, "0");
+      localStorage.setItem(LOBBY_TODAY_DATE_KEY, t); // ✅ ロビー連携
+      localStorage.setItem(LOBBY_TODAY_KEY, "0");    // ✅ ロビー連携
       return 0;
     }
 
@@ -892,6 +912,8 @@
       localStorage.removeItem(KEY_SEEN);
       localStorage.removeItem(KEY_TODAY);
       localStorage.removeItem(KEY_TODAY_DATE);
+      localStorage.removeItem(LOBBY_TODAY_KEY);
+      localStorage.removeItem(LOBBY_TODAY_DATE_KEY);
 
       bag = [];
       currentIndex = -1;
